@@ -1,22 +1,74 @@
-h1
+/*ID>class,pseudoclass>tag selectors,pseudoelements*/
+#carousel-txt
 {
-    font-size:5vw;/*Viewport is the browser window size.
+    font-size:4em;
+    /*Viewport is the browser window size.
      1vw = 1% of viewport width. If the viewport is 50cm wide, 1vw is 0.5cm.*/
+}
+footer
+{
+    color:black
 }
 #navbar
 {
     width: 100%;
 }
-.scrollSide
+
+.scrollSide-50
 {
-    height: 100vw;
+    height: 50vh;
+}
+.nav-item
+{
+   width: 100vw;
 }
 .dropdownContainer
 {
  position: relative;
 }
-/*jj
-/*nav
+.scrollSide
 {
- 
+    height: 100vh;
 }
+.card
+{
+    margin: 2vh;
+    width:  80vw;
+}
+.carousel-img
+{
+    max-width: 100%;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+/*mobile devices first-design for mobiles - desktops are faster so they adapt faster */
+@media only screen and (min-width: 768px) {
+    /* For desktop: */
+.card
+{
+     width:100%;
+} 
+.nav-item
+{
+   width: auto;
+}
+#carousel-txt
+{
+    font-size: 6em;
+}
+}
+@media only screen and (max-width: 350px) {
+    /* For mini mobile phones:*/
+    #carousel-txt{
+      font-size: 3em;
+    }
+}
+/*.carousel-indicators li {
+    color: black;
+    background-color: #000000;
+    box-shadow: inset 1px 1px 1px 1px rgba(0,0,0,0.5);    
+}
+.carousel-indicators .active {
+    background-color: #000000;
+}*/
