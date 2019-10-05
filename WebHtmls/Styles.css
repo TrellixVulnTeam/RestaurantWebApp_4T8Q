@@ -1,7 +1,7 @@
 /*ID>class,pseudoclass>tag selectors,pseudoelements*/
 #carousel-txt
 {
-    font-size:4em;
+    font-size:3em;
     /*Viewport is the browser window size.
      1vw = 1% of viewport width. If the viewport is 50cm wide, 1vw is 0.5cm.*/
 }
@@ -55,7 +55,7 @@ footer
 }
 #carousel-txt
 {
-    font-size: 6em;
+    font-size: 4em;
 }
 }
 @media only screen and (max-width: 350px) {
