@@ -1,7 +1,8 @@
 {% if productList %}
     <ul>
     {% for product in productList %}
-        <li><a href="/restit/product/{{ product.id }}/">{{ product.name }}</a></li>
+        <!--<li><a href="/restit/product/{{ product.id }}/">{{ product.name }}</a></li>-->
+        <li><a href="{% url 'RestIT:product_detail' product.id %}">{{ product.name }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
