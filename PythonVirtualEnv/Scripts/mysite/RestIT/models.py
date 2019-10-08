@@ -1,15 +1,14 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator
 
 # Create your models here.
 class CommonUserInfo(models.Model):
     login = models.CharField(max_length=20,blank=True,unique=True)
     password = models.CharField(max_length=30,blank=True)
-    signUpDate = models.DateTimeField(default=timezone.now())
+    signUpDate = models.DateTimeField(timezone.now())
     lastLoginDate = models.DateTimeField(auto_now=True)
-    avatar = models.ImageField(blank=True)
+    #avatar = models.ImageField(blank=True)
     email = models.EmailField(default="xyz@gmail.com")
     address = models.TextField(max_length=100,blank=True)
     firstName = models.TextField(max_length=30,default="John")
@@ -22,7 +21,6 @@ class CommonUserInfo(models.Model):
 
 class BusinessUser(CommonUserInfo):
     ownerID = models.ManyToManyField("Business",blank=True)
-    permissions = User.user_permissions
 
 class Business(models.Model):
     owners = models.ManyToManyField("BusinessUser",blank=True)

@@ -1,0 +1,23 @@
+<h1>Review for: {{ product.name }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% for group in product.group.all %}
+<li>{{group.name}}</li>
+{% endfor %}
+
+<form action="{% url 'RestIT:review' product.id %}" method="post">
+{% csrf_token %}
+<div class="form-group">
+    <label for="text">Title:</label>
+    <input type="text" class="form-control" id="title">
+</div>
+<div class="form-group">
+    <label for="text">Description:</label>
+    <input type="text" class="form-control" id="text">
+</div>
+<div class="form-group">
+    <label for="text">Rate:</label>
+    <input type="text" class="form-control" id="text">
+</div>
+<input type="submit" value="review">
+</form>

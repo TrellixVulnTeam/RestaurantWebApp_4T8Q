@@ -1,10 +1,14 @@
 from django.shortcuts import render, get_object_or_404
 from django.template import loader
+from django.urls import reverse
 #from django.http import Http404
 # Create your views here.
 
-from django.http import HttpResponse
-from .models import Product
+from django.http import HttpResponse, HttpResponseRedirect
+from .models import Product, Review
+{
+"python.linting.pylintArgs": ["--generate-members"],
+}
 
 def index(request):
     #return HttpResponse("Hello, world. You're at the reviews index.")
@@ -34,5 +38,23 @@ def reviews(request, review_id):
     response = "You're looking at the results of review %s."
     return HttpResponse(response % review_id)
 
-def add_review(request, review_id):
-    return HttpResponse("You're adding a review to product %s." % review_id)
+def add_review(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    return render(request, 'add_review.html', {'product': product})
+
+def review(request, product_id):
+    review = get_object_or_404(Review, pk=product_id)
+    try:
+        selected_choice = review.a.get(pk=request.POST['text'])
+    except (KeyError, Review.DoesNotExist):
+        # Redisplay the question voting form.
+        return render(request, 'RestIT/detail.html', {
+            'review': Review,
+            'error_message': "You didn't select a choice.",
+        })
+    else:
+        selected_choice.save()
+        # Always return an HttpResponseRedirect after successfully dealing
+        # with POST data. This prevents data from being posted twice if a
+        # user hits the Back button.
+        return HttpResponseRedirect(reverse('RestIT:reviews', args=(review.id,)))
