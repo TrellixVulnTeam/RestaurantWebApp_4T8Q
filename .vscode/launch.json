@@ -8,7 +8,7 @@
             "name": "Python: Django",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/PythonVirtualEnv/Scripts/mysite/manage.py",
+            "program": "${workspaceFolder}/PythonVirtualEnv/Scripts/RestIT/manage.py",
             "args": [
                 "runserver",
                 "--noreload"

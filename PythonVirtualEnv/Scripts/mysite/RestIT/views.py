@@ -43,7 +43,7 @@ def add_review(request, product_id):
     return render(request, 'add_review.html', {'product': product})
 
 def review(request, product_id):
-    review = get_object_or_404(Review, pk=product_id)
+    review = get_object_or_404(Product, pk=product_id)
     try:
         selected_choice = review.a.get(pk=request.POST['text'])
     except (KeyError, Review.DoesNotExist):

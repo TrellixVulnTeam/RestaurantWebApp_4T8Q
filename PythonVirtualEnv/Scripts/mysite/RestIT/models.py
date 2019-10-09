@@ -8,7 +8,7 @@ class CommonUserInfo(models.Model):
     password = models.CharField(max_length=30,blank=True)
     signUpDate = models.DateTimeField(timezone.now())
     lastLoginDate = models.DateTimeField(auto_now=True)
-    #avatar = models.ImageField(blank=True)
+    avatar = models.ImageField(blank=True)
     email = models.EmailField(default="xyz@gmail.com")
     address = models.TextField(max_length=100,blank=True)
     firstName = models.TextField(max_length=30,default="John")
