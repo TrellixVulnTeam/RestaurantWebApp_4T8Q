@@ -1,13 +1,11 @@
 from django.db import models
 from django.utils import timezone
 import datetime
-from models.users import User
-from order_related_objects.product import Product
-from BasicBusinessManager.models.order_related_objects.company import Company
+from .company import Company
 
 # Create your models here.
 class Order(models.Model):
-    client = models.OneToOneField("User",on_delete=models.DO_NOTHING)
+    client = models.OneToOneField("Client",on_delete=models.DO_NOTHING)
     products = models.ManyToManyField("Product")
     deliverant = models.OneToOneField("Company",on_delete=models.DO_NOTHING)
     order_date = models.DateTimeField(auto_now=True)

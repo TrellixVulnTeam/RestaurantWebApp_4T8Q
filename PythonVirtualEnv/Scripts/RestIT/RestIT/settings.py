@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'OrderPutter.apps.OrderputterConfig',
+    'order_putter.apps.OrderPutterConfig',
     'BasicBusinessManager.apps.BasicbusinessmanagerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
