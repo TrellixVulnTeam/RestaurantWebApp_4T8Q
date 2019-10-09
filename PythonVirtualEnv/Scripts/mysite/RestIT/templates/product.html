@@ -1,7 +1,0 @@
-<h1>{{ product.name }}</h1>
-<ul>
-{% for group in product.group.all %}
-    <li>{{ group.name }}</li>
-{% endfor %}
-</ul>
-<a href="{% url 'RestIT:add_review' product.id %}">add review</a>
