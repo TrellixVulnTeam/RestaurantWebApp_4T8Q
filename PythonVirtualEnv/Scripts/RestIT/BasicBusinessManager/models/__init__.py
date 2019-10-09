@@ -4,4 +4,4 @@ from .users.employee import Employee
 from .users.client import Client
 
 from .order_related_objects.order import Order
-from .order_related_objects.product import product
+from .order_related_objects.product import Product
