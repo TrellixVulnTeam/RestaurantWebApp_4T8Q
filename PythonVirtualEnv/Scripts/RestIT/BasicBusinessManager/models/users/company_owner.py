@@ -6,4 +6,4 @@ class CompanyOwner(models.Model):
     company_owned = models.ManyToManyField("Company",blank=True)
     address = models.CharField(max_length=60,blank=True)
     def __str__(self):
-        return self.user.name
+        return self.username

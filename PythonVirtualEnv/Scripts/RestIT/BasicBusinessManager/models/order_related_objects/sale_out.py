@@ -12,6 +12,6 @@ class Sale_out(models.Model):
     
     #if current date is later than end date returns true
     def finished(self):
-        return timezone.now - self.end_date > 0
+        return timezone.now() - self.end_date > timezone.now()-timezone.now()
     def __str__(self):
         return self.name

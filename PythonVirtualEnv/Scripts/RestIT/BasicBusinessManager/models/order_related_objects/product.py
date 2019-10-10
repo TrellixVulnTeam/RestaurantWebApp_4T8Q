@@ -9,8 +9,6 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10,decimal_places=2)
     #sale_out = models.ForeignKey(Sale_out,on_delete=models.DO_NOTHING)
     sallers = models.ManyToManyField("Company")
-
-    def years_employed(self):
-        return now - self.user.date_joined
+    
     def __str__(self):
         return self.name

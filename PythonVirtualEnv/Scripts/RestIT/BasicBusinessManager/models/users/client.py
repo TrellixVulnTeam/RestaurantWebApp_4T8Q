@@ -10,4 +10,4 @@ class Client(models.Model):
     discount = models.PositiveIntegerField(validators=[MaxValueValidator(100)])
     address = models.CharField(max_length=60,blank=True)
     def __str__(self):
-        return self.user.name
+        return self.username
