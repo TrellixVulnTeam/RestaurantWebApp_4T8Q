@@ -3,8 +3,11 @@
 <!DOCTYPE html>
 <html lang="en-PL">
 <head>
+    <!--Django part-->
+    {% load static %}
+    <!--End of Django-->
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="../Styles.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'BasicBusinessManager/styles.css' %}">
     <meta name="description" content="Free web Restaurant app">
     <meta name="keywords" content="Free, Restaurant, app"><!--search engines-->
     <meta name="author" content="Seyhak Ly">
@@ -145,7 +148,7 @@
 
                 <div class="carousel-item active scrollSide">
                     
-                    <img src="../Images/1.jpg" class="carousel-img"  alt="">
+                    <img src="{% static 'BasicBusinessManager/Images/1.jpg' %}" class="carousel-img"  alt="">
                     <div class="carousel-caption"> 
                         <h1 class="display-1 text-center" id="carousel-txt">Welcome</h1>
                     </div>
@@ -154,7 +157,7 @@
 
                 <div class="carousel-item scrollSide">
 
-                    <img src="../Images/2.jpg" class="carousel-img" alt="">
+                    <img src="{% static 'BasicBusinessManager/Images/2.jpg' %}" class="carousel-img" alt="">
                     <div class="carousel-caption"> 
                         <h1 class="display-1 text-center" id="carousel-txt">Welcome</h1>
                     </div>
@@ -166,7 +169,7 @@
                     <div class="carousel-caption"> 
                         <h1 class="display-1 text-center" id="carousel-txt">Serve amazing food!</h1></div>
                     </div>
-                    <img src="../Images/3.jpg" class="carousel-img"alt="">
+                    <img src="{% static 'BasicBusinessManager/Images/3.jpg' %}" class="carousel-img"alt="">
                    
                 </div>
 
