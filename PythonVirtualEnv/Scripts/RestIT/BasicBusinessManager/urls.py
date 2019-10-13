@@ -1,11 +1,16 @@
-from django.urls import path
+from django.urls import path, include 
+from django.contrib.auth import views as auth_views
 
 from . import views
 
 #namespace
 app_name = 'BasicBusinessManager'
 urlpatterns = [
-    path('', views.MainView.as_view(), name='Main'),
+    path('en/', views.MainView.as_view(), name='main'),
+    path('en/login/', views.login_view, name='login'),
+    path('en/logout/', views.logout, name='logout'),
+    path('en/contact/', views.ContactView.as_view(), name='contact'),
+    #path('en/', auth_views.LoginView.as_view(template_name='BasicBusinessManager/WebHtmls/EN/Main.html')),
      # ex: /polls/5/
     #path('product/<int:product_id>/', views.product_detail, name='product_detail'),
     # ex: /polls/5/results/
