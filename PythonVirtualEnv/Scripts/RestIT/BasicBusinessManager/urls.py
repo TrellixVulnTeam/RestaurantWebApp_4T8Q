@@ -8,7 +8,7 @@ app_name = 'BasicBusinessManager'
 urlpatterns = [
     path('en/', views.MainView.as_view(), name='main'),
     path('en/login/', views.login_view, name='login'),
-    path('en/logout/', views.logout, name='logout'),
+    path('en/logout/', views.logout_view, name='logout'),
     path('en/contact/', views.ContactView.as_view(), name='contact'),
     #path('en/', auth_views.LoginView.as_view(template_name='BasicBusinessManager/WebHtmls/EN/Main.html')),
      # ex: /polls/5/

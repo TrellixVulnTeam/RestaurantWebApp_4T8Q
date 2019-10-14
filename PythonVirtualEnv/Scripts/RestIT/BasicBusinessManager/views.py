@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
 from django.urls import reverse
 from django.views.generic.base import TemplateView
@@ -27,9 +27,10 @@ class MainView(TemplateView):
 class ContactView(TemplateView):
     template_name = 'BasicBusinessManager/WebHtmls/EN/Contact.html'
 
-def logout(request):
+def logout_view(request):
     print("logout")
-    #logout(request)
+    logout(request)
+    #return redirect('BasicBusinessManager:main')
     return HttpResponseRedirect(reverse('BasicBusinessManager:main'))
 
 def login_view(request):
