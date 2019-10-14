@@ -42,6 +42,7 @@
                         <button type="button" class="dropdown-item" data-toggle="modal" data-target="#login-modal">Login</button>
                         <button type="button" class="dropdown-item" data-toggle="modal" data-target="#sign-up-modal">Sign Up</button>
                         {% else %}
+                        <a class="dropdown-item btn"  href="{% url 'BasicBusinessManager:logout' %}">Settings</a>
                         <a class="dropdown-item btn"  href="{% url 'BasicBusinessManager:logout' %}">Sign Out</a>
                         {% endif %}
                     </div>
@@ -51,10 +52,12 @@
 </header>
 
 <body>
-    <div data-spy="affix" id="dot-nav">
+    {% block content %}
+    <div data-spy="affix" id="dot-nav" class="float-right" >
             <ul>
               <li class="awesome-tooltip active" title="Home"><a href="#home"></a></li>
               <li class="awesome-tooltip" title="About"><a href="#slideshow"></a></li>
+              <li class="awesome-tooltip" title="Contact"><a href="#contact"></a></li>
             </ul>
     </div>   
     <!--titling text-->
@@ -111,6 +114,13 @@
             </div>
         </div>
     </div>
+    {% if wrong_pwd %} 
+    <script type="text/javascript">
+        $(window).on('load',function(){
+            $('#sign-up-modal').modal('show');
+        });
+    </script> 
+    {% endif %}
 <!-- The Modal for Sign up -->
 <div class="modal fade" id="sign-up-modal">
         <div class="modal-dialog">
@@ -124,24 +134,38 @@
         
                 <!-- Modal body -->
                 <div class="modal-body">
-                    <form action="main" method="POST" >
+                    <form action="{% url 'BasicBusinessManager:login' %}" method="POST" >
+                            {% csrf_token %}
                             <div class="form-group">
                               <label for="login">Email:</label>
-                              <input type="text" class="form-control" id="login">
+                              <input type="text" class="form-control" name = "sign-up-email" id="sign-up-email">
                             </div>
                             <div class="form-group">
                                 <label for="pwd">Login:</label>
-                                <input type="password" class="form-control" id="pwd">
+                                <input type="text" class="form-control" name = "sign-up-username" id="sign-up-username">
                             </div>
                             <div class="form-group">
                               <label for="pwd">Password:</label>
-                              <input type="password" class="form-control" id="pwd">
+                              <input type="password" class="form-control"  name = "sign-up-pwd" id="sign-up-pwd">
                             </div>
                             <div class="form-group">
                                 <label for="pwd">Confirm password:</label>
-                                <input type="password" class="form-control" id="pwd">
+                                <input type="password" class="form-control" name = "sign-up-confirm-pwd" id="sign-up-confirm-pwd">
                             </div>
-                        <button type="submit" class="btn btn-primary">Confirm</button>
+                            <div class="form-group">
+                                    <label for="type-sel">Select account type:</label>
+                                    <select class="form-control" id="type-sel" name="type-sel">
+                                      <option>Client</option>
+                                      <option>Employee</option>
+                                      <option>Business client</option>
+                                    </select>
+                                  </div>
+                            {% if wrong_pwd %}
+                            <div class="alert alert-danger">
+                                <strong>Error! </strong>{{wrong_pwd}}
+                            </div>
+                            {% endif %}
+                        <button type="submit" value="sign_up" name="submit" class="btn btn-primary">Confirm</button>
                     </form>
                 </div>
         
@@ -186,11 +210,11 @@
                     </div>
                 
                     <div class="carousel-item scrollSide"> 
-
+                        
+                        <img src="{% static 'BasicBusinessManager/Images/3.jpg' %}" class="carousel-img"alt="">
                         <div class="carousel-caption"> 
                             <h1 class="display-1 text-center" id="carousel-txt">Serve amazing food!</h1></div>
                         </div>
-                        <img src="{% static 'BasicBusinessManager/Images/3.jpg' %}" class="carousel-img"alt="">
                     
                     </div>
 
@@ -204,6 +228,44 @@
 
         </div>
     </section>
+    <section id="contact">
+        <div>
+            <h5 id="contact-display" class="display-5 text-center">Contact data:</h5>
+            <div class="row">
+                <div class="col-md-3 mx-auto card-containter">
+                    <div class="card mx-auto">
+                        <img class="card-img-top" src="{% static 'BasicBusinessManager/Images/avatar1.png' %}">
+                        <div class="card-body">
+                            <p class="text-center">Seyhak Ly</p>
+                            <p class="text-center">509989307</p>
+                            <p class="text-center">seyhak.ly@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mx-auto">
+                        <div class="card mx-auto">
+                            <img class="card-img-top" src="{% static 'BasicBusinessManager/Images/avatar1.png' %}">
+                            <div class="card-body">
+                                <p class="text-center">Seyhak Ly</p>
+                                <p class="text-center">509989307</p>
+                                <p class="text-center">seyhak.ly@gmail.com</p>
+                            </div>
+                        </div>
+                    </div>
+                <div class="col-md-3 mx-auto">
+                        <div class="card mx-auto">
+                            <img class="card-img-top" src="{% static 'BasicBusinessManager/Images/avatar1.png' %}">
+                            <div class="card-body">
+                                <p class="text-center">Seyhak Ly</p>
+                                <p class="text-center">509989307</p>
+                                <p class="text-center">seyhak.ly@gmail.com</p>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </section>
+    {%endblock%}
 </body>
 <footer class="bg-dark">
     <a class="text-white " href="http://www.seyhak.pl">Seyhak Ly &copy 2019</a> 

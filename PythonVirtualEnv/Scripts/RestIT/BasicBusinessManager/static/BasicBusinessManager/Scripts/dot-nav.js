@@ -15,7 +15,6 @@ $(document).ready(function(){
         $('section').each(function(i,item){
           var ele = $(item), nextTop;
           
-          console.log(ele.next().html());
           
           if (typeof ele.next().offset() != "undefined") {
             nextTop = ele.next().offset().top;
@@ -23,18 +22,29 @@ $(document).ready(function(){
           else {
             nextTop = $(document).height();
           }
-          
+
           if (ele.offset() !== null) {
             thisTop = ele.offset().top - ((nextTop - ele.offset().top) / numSections);
           }
           else {
             thisTop = 0;
           }
-          
+          if(nextTop==0)
+          {
+            nextTop=ele.next().height();
+          }
           var docTop = $(document).scrollTop();
-          
-          if(docTop >= thisTop && (docTop < nextTop)){
+          //those constants are: nave height and home height - to change later
+          //console.log(i+" " + item.id+" "+ thisTop+" "+  docTop+" "+  nextTop);
+          if(nextTop==0&&docTop<thisTop)
+          {
             $('#dot-nav li').eq(i).addClass('active');
+          }
+          else
+          {
+            if(docTop>= thisTop-80 && (docTop < nextTop-200)){
+              $('#dot-nav li').eq(i).addClass('active');
+            }
           }
         });   
     }

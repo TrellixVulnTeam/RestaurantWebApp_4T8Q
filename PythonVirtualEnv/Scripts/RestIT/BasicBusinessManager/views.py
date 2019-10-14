@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.views.generic.base import TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import sessions
+from django.contrib.auth.models import User
 
 from django.http import HttpResponse, HttpResponseRedirect
 # Create your views here.
@@ -34,8 +35,8 @@ def logout_view(request):
     return HttpResponseRedirect(reverse('BasicBusinessManager:main'))
 
 def login_view(request):
-    chuj = "chuj"
     if request.method == "POST":
+        # backend finds object (get) using html - name then check its value
         if request.POST.get('submit') == 'login':
             # your sign in logic goes here
             
@@ -80,13 +81,29 @@ def login_view(request):
             #return HttpResponseRedirect(reverse('BasicBusinessManager:login_result'))
             return HttpResponseRedirect(reverse('BasicBusinessManager:main'))
             #return render(request, 'BasicBusinessManager/WebHtmls/EN/Main.html', {'chuj': chuj})
-            #login = question.choice_set.get(pk=request.POST['login'])
         elif request.POST.get('submit') == 'sign_up':
             # your sign up logic goes here
-            chuj = "pytong"
-            return render(request, 'BasicBusinessManager/WebHtmls/EN/Main.html', {'chuj': chuj})
+            sign_up_data = request.POST.dict()
+            email = sign_up_data.get("sign-up-email")
+            username = sign_up_data.get("sign-up-username")
+            password = sign_up_data.get("sign-up-pwd")
+            confirmation_password = sign_up_data.get("sign-up-confirm-pwd")
+            account_type = sign_up_data.get("type-sel")
+            if (password == confirmation_password) and (password != "" and confirmation_password != ""):
+                if account_type=="Client":
+                    user = User.objects.create_user(username,email,password)
+                    user.save()
+                elif account_type=="Employee":
+                    user = User.objects.create_user(username,email,password)
+                    user.save()
+                elif account_type=="Business client":
+                    user = User.objects.create_user(username,email,password)
+                    user.save()
+                return HttpResponseRedirect(reverse('BasicBusinessManager:main'))
+            else: 
+                return render(request, 'BasicBusinessManager/WebHtmls/EN/Main.html',{'wrong_pwd':"Password and Confirmation password are not the same or empty !"})
     
-    return render(request, 'BasicBusinessManager/WebHtmls/EN/Main.html', {'chuj': "brak post"})
+    return render(request, 'BasicBusinessManager/WebHtmls/EN/Main.html')
 
 class AccountVerifying:
     def authenticate(self, request, username=None, password=None):
