@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.utils import timezone
 import datetime
 
+from django.contrib.auth.models import User
 from BasicBusinessManager.models.users.employee import Employee
 from BasicBusinessManager.models.users.company_owner import CompanyOwner
 from BasicBusinessManager.models.users.client import Client
@@ -36,9 +37,11 @@ class EmployeeModelTests(TestCase):
         '''
         username = "login"
         name = "John"
-        employee = Employee()
-        employee.first_name=name
-        employee.username=username
+        email="SDSA@osd.sad"
+        pwd ="asdasssssssssssssssssssssssss"
+        xyz = User.objects.create_user(username,email,pwd)
+        employee = Employee.objects.create_employee(xyz)
+        employee.user.first_name=name
         self.assertEqual(employee.__str__(),name)
 
     def test_username_returned(self):
@@ -47,8 +50,10 @@ class EmployeeModelTests(TestCase):
 
         '''
         username = "login"
-        employee = Employee()
-        employee.username=username
+        email="SDSA@osd.sad"
+        pwd ="asdasssssssssssssssssssssssss"
+        xyz = User.objects.create_user(username,email,pwd)
+        employee = Employee.objects.create_employee(xyz)
         self.assertEqual(employee.__str__(),username)
 
 class CompanyOwnerModelTests(TestCase):
@@ -57,10 +62,13 @@ class CompanyOwnerModelTests(TestCase):
         checks if returns proper name for example
 
         '''
-        name = "Owner"
-        owner = CompanyOwner()
-        owner.username = name
-        self.assertEqual(owner.__str__(),name)
+        username = "Owner"
+        email="SDSA@osd.sad"
+        pwd ="asdasssssssssssssssssssssssss"
+        xyz = User.objects.create_user(username,email,pwd)
+        owner = CompanyOwner.objects.create_owner(xyz)
+        owner.first_name=username
+        self.assertEqual(owner.__str__(),username)
 
 class ClientModelTests(TestCase):
     def test_client_name(self):
@@ -68,7 +76,10 @@ class ClientModelTests(TestCase):
         checks if returns proper name for example
 
         '''
-        name = "Client"
-        client = Client()
-        client.username = name
-        self.assertEqual(client.__str__(),name)
+        username = "Client"
+        email="SDSA@osd.sad"
+        pwd ="asdasssssssssssssssssssssssss"
+        xyz = User.objects.create_user(username,email,pwd)
+        client = Client.objects.create_client(xyz)
+        client.first_name=username
+        self.assertEqual(client.__str__(),username)

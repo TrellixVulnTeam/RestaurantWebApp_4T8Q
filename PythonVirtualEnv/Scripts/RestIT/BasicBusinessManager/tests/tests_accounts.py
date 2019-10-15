@@ -1,0 +1,136 @@
+from BasicBusinessManager.models.users.employee import Employee
+from BasicBusinessManager.models.users.company_owner import CompanyOwner
+from BasicBusinessManager.models.users.client import Client as ClientModel
+from django.contrib.auth.models import User
+
+from django.urls import reverse
+from django.core.exceptions import *
+from django.shortcuts import get_object_or_404
+from BasicBusinessManager.views import login_view
+from django.test import TestCase, Client
+from django.utils import timezone
+import datetime
+
+def create_user(email,username,password,conf_password,type):
+    '''
+    create user with given data
+    
+    '''
+
+
+class SignUpTests(TestCase):
+    def test_proper_sign_up(self):
+        '''
+        checks if sign up works for client, owner and worker
+
+        '''
+        print(self.test_proper_sign_up.__name__)
+        c = Client()
+        example = 'example_client'
+        acc_type="Client"
+        c.post(reverse('BasicBusinessManager:login'),{'submit': 'sign_up','sign-up-email':'abcd@em.pl','sign-up-username':example,"sign-up-pwd":"pass","sign-up-confirm-pwd":"pass","type-sel":acc_type})
+        try:
+            user = get_object_or_404(ClientModel, user__username=example)
+            self.assertTrue(True)
+        except ObjectDoesNotExist:
+            self.assertTrue(False)
+
+        c = Client()
+        example = 'example_owner'
+        acc_type="Business client"
+        c.post(reverse('BasicBusinessManager:login'),{'submit': 'sign_up','sign-up-email':'abcd@em.pl','sign-up-username':example,"sign-up-pwd":"pass","sign-up-confirm-pwd":"pass","type-sel":acc_type})
+        try:
+            user = get_object_or_404(CompanyOwner, user__username=example)
+            self.assertTrue(True)
+        except ObjectDoesNotExist:
+            self.assertTrue(False)
+        
+        c = Client()
+        example = 'example_employee'
+        acc_type="Employee"
+        c.post(reverse('BasicBusinessManager:login'),{'submit': 'sign_up','sign-up-email':'abcd@em.pl','sign-up-username':example,"sign-up-pwd":"pass","sign-up-confirm-pwd":"pass","type-sel":acc_type})
+        try:
+            user = get_object_or_404(Employee, user__username=example)
+            self.assertTrue(True)
+        except ObjectDoesNotExist:
+            self.assertTrue(False)
+        
+    def test_inproper_sign_up_wrong_conf_password(self):
+        '''
+        checks if sign up error works for client, owner and worker if password is not equal to confirmation password
+
+        '''
+        c = Client()
+        example = 'example_client'
+        password = "haslo123"
+        confirmation_password="haslo1233214"
+        acc_type="Client"
+        response =c.post(reverse('BasicBusinessManager:login'),{'submit': 'sign_up','sign-up-email':'abcd@em.pl','sign-up-username':example,"sign-up-pwd":password,"sign-up-confirm-pwd":confirmation_password,"type-sel":acc_type})
+        respond = response.context['wrong_pwd']
+        self.assertEqual(respond,"Password and Confirmation password are not the same or empty !")
+        
+        
+        c = Client()
+        example = 'example_owner'
+        password = "haslo123"
+        confirmation_password="haslo1233214"
+
+        acc_type="Business client"
+        response = c.post(reverse('BasicBusinessManager:login'),{'submit': 'sign_up','sign-up-email':'abcd@em.pl','sign-up-username':example,"sign-up-pwd":password,"sign-up-confirm-pwd":confirmation_password,"type-sel":acc_type})
+        respond = response.context['wrong_pwd']
+        self.assertEqual(respond,"Password and Confirmation password are not the same or empty !")
+        
+        c = Client()
+        example = 'example_employee'
+        password = "haslo123"
+        confirmation_password="haslo1233214"
+
+        acc_type="Employee"
+        response = c.post(reverse('BasicBusinessManager:login'),{'submit': 'sign_up','sign-up-email':'abcd@em.pl','sign-up-username':example,"sign-up-pwd":password,"sign-up-confirm-pwd":confirmation_password,"type-sel":acc_type})
+        respond = response.context['wrong_pwd']
+        self.assertEqual(respond,"Password and Confirmation password are not the same or empty !")
+
+    def test_inproper_sign_up_no_data(self):
+        '''
+        checks if sign up works for client if data is not filled
+
+        '''
+        c = Client()
+        example = 'example_client'
+        password = "haslo123"
+        confirmation_password="haslo1233214"
+        acc_type="Client"
+        response =c.post(reverse('BasicBusinessManager:login'),{'submit': 'sign_up','sign-up-email':'','sign-up-username':example,"sign-up-pwd":password,"sign-up-confirm-pwd":confirmation_password,"type-sel":acc_type})
+        respond = response.context['wrong_pwd']
+        self.assertEqual(respond," Empty data fields ")
+
+        c = Client()
+        example = ''
+        password = "haslo123"
+        confirmation_password="haslo1233214"
+        acc_type="Client"
+        response =c.post(reverse('BasicBusinessManager:login'),{'submit': 'sign_up','sign-up-email':'yyyy@ssss.ry','sign-up-username':example,"sign-up-pwd":password,"sign-up-confirm-pwd":confirmation_password,"type-sel":acc_type})
+        respond = response.context['wrong_pwd']
+        self.assertEqual(respond," Empty data fields ")
+
+class LoginTests(TestCase):
+    def test_proper_loging_in(self):
+        '''
+        checks if sign up/login works for client
+
+        '''
+        print(self.test_proper_sign_up.__name__)
+        c = Client()
+        example = 'example_client'
+        acc_type="Client"
+        c.post(reverse('BasicBusinessManager:login'),{'submit': 'sign_up','sign-up-email':'abcd@em.pl','sign-up-username':example,"sign-up-pwd":"pass","sign-up-confirm-pwd":"pass","type-sel":acc_type})
+        try:
+            user = get_object_or_404(ClientModel, user__username=example)
+            self.assertTrue(True)
+        except ObjectDoesNotExist:
+            self.assertTrue(False)
+        c.post(reverse('BasicBusinessManager:login'),{'submit':'login',})
+
+class LogoutTests(TestCase):
+    pass
+        

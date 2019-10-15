@@ -5,6 +5,9 @@ from django.views.generic.base import TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import sessions
 from django.contrib.auth.models import User
+from .models.users.employee import Employee
+from .models.users.company_owner import CompanyOwner
+from .models.users.client import Client
 
 from django.http import HttpResponse, HttpResponseRedirect
 # Create your views here.
@@ -20,7 +23,7 @@ class MainView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(MainView, self).get_context_data(**kwargs)
         context.update({
-            'chuj': self.kwargs.get('chuj', "sda"),
+            'var1': self.kwargs.get('var1', "sda"),
             #'var2': self.kwargs.get('var2', None),
         })
         return context
@@ -82,25 +85,43 @@ def login_view(request):
             return HttpResponseRedirect(reverse('BasicBusinessManager:main'))
             #return render(request, 'BasicBusinessManager/WebHtmls/EN/Main.html', {'chuj': chuj})
         elif request.POST.get('submit') == 'sign_up':
-            # your sign up logic goes here
+            # takes data from inputs by name
             sign_up_data = request.POST.dict()
             email = sign_up_data.get("sign-up-email")
             username = sign_up_data.get("sign-up-username")
             password = sign_up_data.get("sign-up-pwd")
             confirmation_password = sign_up_data.get("sign-up-confirm-pwd")
             account_type = sign_up_data.get("type-sel")
+
+            #checks if data is filled
+            error_msg = ""
+            if email == "" or email is None:
+                error_msg += " Empty data fields "
+            if username == "" or username is None:
+                error_msg +=" Empty data fields "
+            if error_msg != "":
+                return render(request, 'BasicBusinessManager/WebHtmls/EN/Main.html',{'wrong_pwd':error_msg})   
+
+            # checks account type then creates user and his child object. Before chcecks if both passwords are the same
             if (password == confirmation_password) and (password != "" and confirmation_password != ""):
                 if account_type=="Client":
                     user = User.objects.create_user(username,email,password)
+                    client = Client.objects.create_client(user)
                     user.save()
+                    client.save()
                 elif account_type=="Employee":
                     user = User.objects.create_user(username,email,password)
+                    employee = Employee.objects.create_employee(user)
                     user.save()
+                    employee.save()
                 elif account_type=="Business client":
                     user = User.objects.create_user(username,email,password)
+                    owner = CompanyOwner.objects.create_owner(user)
                     user.save()
+                    owner.save()
                 return HttpResponseRedirect(reverse('BasicBusinessManager:main'))
             else: 
+                #if passwords are incorrect it renderds en/login/ page showing modal with "wrong password" info
                 return render(request, 'BasicBusinessManager/WebHtmls/EN/Main.html',{'wrong_pwd':"Password and Confirmation password are not the same or empty !"})
     
     return render(request, 'BasicBusinessManager/WebHtmls/EN/Main.html')
