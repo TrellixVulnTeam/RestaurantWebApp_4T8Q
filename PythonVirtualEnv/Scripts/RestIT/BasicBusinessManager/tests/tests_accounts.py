@@ -119,17 +119,25 @@ class LoginTests(TestCase):
         checks if sign up/login works for client
 
         '''
-        print(self.test_proper_sign_up.__name__)
         c = Client()
-        example = 'example_client'
+        example_username = 'example_client'
+        example_password = "haslo4321"
         acc_type="Client"
-        c.post(reverse('BasicBusinessManager:login'),{'submit': 'sign_up','sign-up-email':'abcd@em.pl','sign-up-username':example,"sign-up-pwd":"pass","sign-up-confirm-pwd":"pass","type-sel":acc_type})
+        c.post(reverse('BasicBusinessManager:login'),{'submit': 'sign_up','sign-up-email':'abcd@em.pl','sign-up-username':example_username,"sign-up-pwd":example_password,"sign-up-confirm-pwd":example_password,"type-sel":acc_type})
         try:
-            user = get_object_or_404(ClientModel, user__username=example)
+            user = get_object_or_404(ClientModel, user__username=example_username)
             self.assertTrue(True)
         except ObjectDoesNotExist:
             self.assertTrue(False)
-        c.post(reverse('BasicBusinessManager:login'),{'submit':'login',})
+        response = c.post(reverse('BasicBusinessManager:login'),{'submit':'login','login':example_username,'pwd':example_password,'remember-me-checkbox':False})
+        try:
+            user = get_object_or_404(ClientModel, user__username=example_username)
+            if user.user.is_authenticated:
+                self.assertTrue(True)
+            else:
+                self.assertTrue(False)
+        except ObjectDoesNotExist:
+            self.assertTrue(False)
 
 class LogoutTests(TestCase):
     pass
