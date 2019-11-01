@@ -9,7 +9,10 @@
 {
     width: 100%;
 }
-
+#navlink
+{
+text-decoration: none;
+}
 .scrollSide-50
 {
     height: 50vh;

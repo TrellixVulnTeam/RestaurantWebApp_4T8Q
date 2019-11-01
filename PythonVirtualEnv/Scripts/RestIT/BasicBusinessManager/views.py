@@ -17,7 +17,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 #main home view - templateView used in that purpose,
 
 class MainView(TemplateView):
-    template_name = 'BasicBusinessManager/WebHtmls/EN/Main.html'
+    template_name = 'BasicBusinessManager/WebHtmls/EN/Home.html'
     
     # sends context data to html. It has to be "get_context_data"
     def get_context_data(self, **kwargs):
@@ -27,7 +27,8 @@ class MainView(TemplateView):
             #'var2': self.kwargs.get('var2', None),
         })
         return context
-
+class SettingsView(TemplateView):
+    template_name='BasicBusinessManager/WebHtmls/EN/Settings.html'
 class ContactView(TemplateView):
     template_name = 'BasicBusinessManager/WebHtmls/EN/Contact.html'
 
@@ -70,12 +71,10 @@ def login_view(request):
                 login(request,user)
                 if request.user.is_authenticated:
                     #request.sessions['user']=user
-                    print("user zalog")
+                    print("user logged in")
                     return HttpResponseRedirect(reverse('BasicBusinessManager:main'))
             else:
-                print("user to zjeb")
-
-            chuj = password
+                print("wrong user data")
 
             # Always return an HttpResponseRedirect after successfully dealing
             # with POST data. This prevents data from being posted twice if a

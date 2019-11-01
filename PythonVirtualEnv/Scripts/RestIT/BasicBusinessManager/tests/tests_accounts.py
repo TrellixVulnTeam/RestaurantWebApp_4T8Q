@@ -2,6 +2,7 @@ from BasicBusinessManager.models.users.employee import Employee
 from BasicBusinessManager.models.users.company_owner import CompanyOwner
 from BasicBusinessManager.models.users.client import Client as ClientModel
 from django.contrib.auth.models import User
+from django.contrib import auth
 
 from django.urls import reverse
 from django.core.exceptions import *
@@ -124,14 +125,21 @@ class LoginTests(TestCase):
         example_password = "haslo4321"
         acc_type="Client"
         c.post(reverse('BasicBusinessManager:login'),{'submit': 'sign_up','sign-up-email':'abcd@em.pl','sign-up-username':example_username,"sign-up-pwd":example_password,"sign-up-confirm-pwd":example_password,"type-sel":acc_type})
+        #create user
         try:
             user = get_object_or_404(ClientModel, user__username=example_username)
             self.assertTrue(True)
         except ObjectDoesNotExist:
             self.assertTrue(False)
         response = c.post(reverse('BasicBusinessManager:login'),{'submit':'login','login':example_username,'pwd':example_password,'remember-me-checkbox':False})
+        #try to login and go back to main page
         try:
-            user = get_object_or_404(ClientModel, user__username=example_username)
+            response = c.post(reverse('BasicBusinessManager:main'))
+            self.assertTrue(True)
+        except ObjectDoesNotExist:
+            self.assertTrue(False)
+        try:
+            user = auth.get_user(self.client)
             if user.user.is_authenticated:
                 self.assertTrue(True)
             else:
@@ -140,5 +148,36 @@ class LoginTests(TestCase):
             self.assertTrue(False)
 
 class LogoutTests(TestCase):
-    pass
+    def test_proper_loging_out(self):
+        '''
+        checks if logout works for client
+
+        '''
+        c = Client()
+        example_username = 'example_client'
+        example_password = "haslo4321"
+        acc_type="Client"
+        c.post(reverse('BasicBusinessManager:login'),{'submit': 'sign_up','sign-up-email':'abcd@em.pl','sign-up-username':example_username,"sign-up-pwd":example_password,"sign-up-confirm-pwd":example_password,"type-sel":acc_type})
+        #create user
+        try:
+            user = get_object_or_404(ClientModel, user__username=example_username)
+            self.assertTrue(True)
+        except ObjectDoesNotExist:
+            self.assertTrue(False)
+        #login
+        response = c.post(reverse('BasicBusinessManager:login'),{'submit':'login','login':example_username,'pwd':example_password,'remember-me-checkbox':False})
+        #logout
+        response = c.post(reverse('BasicBusinessManager:logout'))
+        try:
+            user = auth.get_user(self.client)
+            #user = get_object_or_404(ClientModel, user__username=example_username)
+            if user.is_authenticated:
+                print("test for logout: status logged in")
+                self.assertTrue(False)
+            else:
+                self.assertTrue(True)
+        except ObjectDoesNotExist:
+            print("test for logout: logout obj does not exist")
+            self.assertTrue(False)
+
         
