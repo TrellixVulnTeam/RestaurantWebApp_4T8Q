@@ -12,3 +12,5 @@ class CompanyOwner(models.Model):
     objects = CompanyManager()
     def __str__(self):
         return self.user.username
+    def type_name(self):
+        return "CompanyOwner"

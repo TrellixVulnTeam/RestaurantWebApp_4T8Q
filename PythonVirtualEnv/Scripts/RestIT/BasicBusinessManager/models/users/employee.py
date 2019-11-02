@@ -16,7 +16,7 @@ class Employee(models.Model):
     workplace = models.ManyToManyField("Company",blank=True)
     years_employed = models.DateField()
     salary_per_month = models.DecimalField(decimal_places =2,max_digits=10,default=0.00)
-    birthsday = models.DateField(default=timezone.now)
+    birthday = models.DateField(default=timezone.now)
     orders_delivered = models.ManyToManyField("Order",blank=True)
     address = models.CharField(max_length=60,blank=True)
     role = models.ForeignKey("Role",on_delete=models.DO_NOTHING,blank=True, null=True)
@@ -34,6 +34,8 @@ class Employee(models.Model):
                 return self.user.username
         except: 
             return self.user.username
+    def type_name(self):
+        return "Employee"
 
 class Role(models.Model):
     name = models.CharField(max_length=30)

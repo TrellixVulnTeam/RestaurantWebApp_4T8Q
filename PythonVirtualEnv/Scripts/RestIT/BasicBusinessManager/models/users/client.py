@@ -11,9 +11,12 @@ class ClientManager(models.Manager):
 
 class Client(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
-    birthsday = models.DateTimeField(default=timezone.now)
+    birthday = models.DateField(default=timezone.now)
     discount = models.PositiveIntegerField(validators=[MaxValueValidator(100)],default=0)
     address = models.CharField(max_length=60,blank=True)
+    #for communications with user inside Client
     objects = ClientManager()
     def __str__(self):
         return self.user.username
+    def type_name(self):
+        return "Client"

@@ -27,8 +27,20 @@ class MainView(TemplateView):
             #'var2': self.kwargs.get('var2', None),
         })
         return context
-class SettingsView(TemplateView):
-    template_name='BasicBusinessManager/WebHtmls/EN/Settings.html'
+def settings_view(request):
+    if request.user.is_authenticated:
+        return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html')
+    else:
+        return HttpResponseRedirect(reverse('BasicBusinessManager:main'))
+
+def settings_submit_view(request):
+    print("submit settings")
+    settings_data = request.GET.dict()
+    #firstname = request.POST.get('firstname')
+    firstname = settings_data.get('firstname')
+    print(firstname)
+    return HttpResponseRedirect(reverse('BasicBusinessManager:settings'))
+
 class ContactView(TemplateView):
     template_name = 'BasicBusinessManager/WebHtmls/EN/Contact.html'
 

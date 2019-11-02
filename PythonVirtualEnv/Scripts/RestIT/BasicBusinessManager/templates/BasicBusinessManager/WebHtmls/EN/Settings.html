@@ -1,1 +1,78 @@
-{% extends "Base.html" %}
+{% extends "BasicBusinessManager/WebHtmls/EN/Base.html" %}
+{% block content %}
+<div id="settings">
+    <form action ="{% url 'BasicBusinessManager:settings-confirm' %}">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+            <span class="input-group-text">First name</span>
+            </div>
+            <input type="text" class="form-control" value ="{{request.user.first_name}}" placeholder="First Name" name="firstname" id="firstname">
+            <div class="input-group-prepend">
+                    <span class="input-group-text">Last name</span>
+            </div>
+            <input type="text" class="form-control" value ="{{request.user.last_name}}" placeholder="Last Name" name="lastname" id="lastname">
+        </div>
+        <label for="address-group">Address:</label>
+        <div class="form-group" id="address-group">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Street</span>
+                </div>
+                <input type="text" class="form-control" name="street" id="street">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Home number</span>
+                </div>
+                <input type="text" class="form-control" name="home-number" id="home-number">
+            </div>
+            <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Post code</span>
+                    </div>
+                    <input type="text" class="form-control" name="post-code" id="post-code">
+                    <div class="input-group-prepend">
+                            <span class="input-group-text">City</span>
+                    </div>
+                    <input type="text" class="form-control" name="city" id="city">
+                    <div class="input-group-prepend">
+                            <span class="input-group-text">Country</span>
+                    </div>
+                    <input type="text" class="form-control" name="country" id="country">
+            </div>
+        </div>
+{% if request.user.type_name is Client %}
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+            <span class="input-group-text">Birthday</span>
+            </div>
+            <input type="date" class="form-control" value="{{request.user.client.birthday|date:'Y-m-d'}}" name="birthday" id="birthday">
+        </div>
+        <button type="submit" name="submit" value="submit" class="btn btn-primary">Submit</button>
+
+    </form>
+</div>
+{% elif request.user.type_name is CompanyOwner %}
+co
+    <button type="submit" name="submit" value="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+<form >
+    <div class="form-group">
+   
+    </div>
+</form>
+{% elif request.user.type_name is Employee %}
+employee
+    <span class="input-group-text">Salary per month</span>
+    </div>
+    <input readonly type="number" class="form-control" name="month-salary" id="month-salary">
+    <button type="submit" name="submit" value="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+<form >
+    <div class="form-group">
+   
+    </div>
+</form>
+{% endif %}
+
+{% endblock %}
