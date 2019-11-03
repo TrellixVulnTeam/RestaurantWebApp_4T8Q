@@ -10,6 +10,9 @@ from .models.users.company_owner import CompanyOwner
 from .models.users.client import Client
 
 from django.http import HttpResponse, HttpResponseRedirect
+#rest
+from rest_framework import viewsets, serializers
+from BasicBusinessManager.serializers import EmployeeSerializer, ClientSerializer
 # Create your views here.
 
 
@@ -140,3 +143,21 @@ class AccountVerifying:
     def authenticate(self, request, username=None, password=None):
         # Check the username/password and return a user.
         ...
+#          #
+# Viewsets #
+#          #
+class EmployeeViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    try:
+        queryset = Employee.objects.all()
+        serializer_class = EmployeeSerializer
+    except: FileNotFoundError
+class ClientViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+
+    queryset = Client.objects.all()
+    serializer_class = ClientSerializer

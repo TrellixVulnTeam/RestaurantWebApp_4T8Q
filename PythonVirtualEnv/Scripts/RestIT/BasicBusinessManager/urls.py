@@ -1,10 +1,18 @@
-from django.urls import path, include 
+from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from django.conf.urls import url
 
 from . import views
+#REST
+from rest_framework import routers
+
 
 #namespace
 app_name = 'BasicBusinessManager'
+router = routers.DefaultRouter()
+#in router urls:
+router.register(r'employee', views.EmployeeViewSet)
+router.register(r'client', views.ClientViewSet)
 urlpatterns = [
     path('en/', views.MainView.as_view(), name='main'),
     path('en/login/', views.login_view, name='login'),
@@ -12,6 +20,9 @@ urlpatterns = [
     path('en/settings/confirm', views.settings_submit_view, name='settings-confirm'),
     path('en/logout/', views.logout_view, name='logout'),
     path('en/contact/', views.ContactView.as_view(), name='contact'),
+    #REST
+    path('abc/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     #path('en/', auth_views.LoginView.as_view(template_name='BasicBusinessManager/WebHtmls/EN/Main.html')),
      # ex: /polls/5/
     #path('product/<int:product_id>/', views.product_detail, name='product_detail'),
