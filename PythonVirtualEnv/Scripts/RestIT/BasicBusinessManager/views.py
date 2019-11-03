@@ -36,7 +36,6 @@ def settings_view(request):
 def settings_submit_view(request):
     print("submit settings")
     settings_data = request.GET.dict()
-    #firstname = request.POST.get('firstname')
     firstname = settings_data.get('firstname')
     print(firstname)
     return HttpResponseRedirect(reverse('BasicBusinessManager:settings'))
