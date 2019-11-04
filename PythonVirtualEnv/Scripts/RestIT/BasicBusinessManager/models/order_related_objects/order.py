@@ -8,12 +8,11 @@ from django.core.exceptions import ValidationError
 
 # Don't allow dates older than order_date.
 class Order(models.Model):
-    client = models.OneToOneField("Client",on_delete=models.DO_NOTHING)
+    client = models.OneToOneField("Client",on_delete=models.DO_NOTHING,blank=True)
     products = models.ManyToManyField("Product")
     deliverant = models.OneToOneField("Company",on_delete=models.DO_NOTHING)
     order_date = models.DateTimeField(auto_now=True)
     delivery_date = models.DateTimeField(blank = True)
-    price = models.DecimalField(max_digits=20,decimal_places=2)
     address_of_delivery = models.CharField(max_length=60,blank=True)
     notes = models.CharField(max_length=100)
     delivered = models.BooleanField(default=False)
