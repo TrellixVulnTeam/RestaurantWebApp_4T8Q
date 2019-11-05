@@ -1,6 +1,6 @@
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
-from django.conf.urls import url
+from django.conf.urls import url, include
 
 from . import views
 #REST
@@ -15,6 +15,12 @@ router = routers.DefaultRouter()
 router.register(r'employee', views.EmployeeViewSet)
 router.register(r'client', views.ClientViewSet)
 router.register(r'order',views.OrderViewSet)
+router.register(r'company_owner',views.CompanyOwnerViewSet)
+router.register(r'company',views.CompanyViewSet)
+router.register(r'sector',views.SectorViewSet)
+router.register(r'role',views.RoleViewSet)
+router.register(r'saleout',views.SaleOutOwnerViewSet)
+router.register(r'product',views.ProductViewSet)
 urlpatterns = [
     path('en/', views.MainView.as_view(), name='main'),
     path('en/login/', views.login_view, name='login'),
@@ -23,10 +29,8 @@ urlpatterns = [
     path('en/logout/', views.logout_view, name='logout'),
     path('en/contact/', views.ContactView.as_view(), name='contact'),
     #REST
-    path('abc/', include(router.urls)),
+    path('REST/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('en/employee/', views.employee_list),
-    path('en/employee/<int:pk>', views.employee_detail),
     #path('en/', auth_views.LoginView.as_view(template_name='BasicBusinessManager/WebHtmls/EN/Main.html')),
      # ex: /polls/5/
     #path('product/<int:product_id>/', views.product_detail, name='product_detail'),
@@ -37,4 +41,6 @@ urlpatterns = [
     # ex: /polls/5/
     #path('product/<int:product_id>/review/', views.review, name='review'),
 ]
+
+#strange bug - it doesnt want to work
 #urlpatterns = format_suffix_patterns(urlpatterns)

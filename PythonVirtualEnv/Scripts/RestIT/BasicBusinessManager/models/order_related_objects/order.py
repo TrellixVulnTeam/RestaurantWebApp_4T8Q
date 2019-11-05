@@ -14,7 +14,7 @@ class Order(models.Model):
     order_date = models.DateTimeField(auto_now=True)
     delivery_date = models.DateTimeField(blank = True)
     address_of_delivery = models.CharField(max_length=60,blank=True)
-    notes = models.CharField(max_length=100)
+    notes = models.CharField(max_length=100,blank=True)
     delivered = models.BooleanField(default=False)
 
     def was_delivered(self):

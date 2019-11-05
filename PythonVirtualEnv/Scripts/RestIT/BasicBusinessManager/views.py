@@ -5,16 +5,21 @@ from django.views.generic.base import TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import sessions
 from django.contrib.auth.models import User
-from .models.users.employee import Employee
+from .models.order_related_objects.company import Company, Sector
+from .models.order_related_objects.order import Order
+from .models.users.employee import Employee, Role
 from .models.users.company_owner import CompanyOwner
 from .models.users.client import Client
+from .models.order_related_objects.product import Product
+from .models.order_related_objects.sale_out import Sale_out
 
 from django.http import HttpResponse, HttpResponseRedirect
 #rest
 from rest_framework import viewsets, serializers, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from BasicBusinessManager.serializers import OrderSerializer, EmployeeSerializer, ClientSerializer
+from rest_framework import permissions
+from BasicBusinessManager.serializers import *
 # Create your views here.
 
 
@@ -156,45 +161,8 @@ class EmployeeViewSet(viewsets.ModelViewSet):
     try:
         queryset = Employee.objects.all()
         serializer_class = EmployeeSerializer
+        permission_classes = [permissions.IsAdminUser]
     except: Employee.HTTP_404_NOT_FOUND
-
-@api_view(['GET','POST'])
-def employee_list(request, format=None):
-    if request.method =='GET':
-        employees = Employee.objects.all()
-        serializer = EmployeeSerializer(employees,many=True)
-        return Response(serializer.data)
-    elif request.method =='POST':
-        serializer = EmployeeSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['GET', 'PUT', 'DELETE'])
-def employee_detail(request, pk, format=None):
-    """
-    Retrieve, update or delete a code snippet.
-    """
-    try:
-        employee = Employee.objects.get(pk=pk)
-    except Employee.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        serializer = EmployeeSerializer(employee)
-        return Response(serializer.data)
-
-    elif request.method == 'PUT':
-        serializer = EmployeeSerializer(employee, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'DELETE':
-        employee.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class ClientViewSet(viewsets.ModelViewSet):
     """
@@ -202,10 +170,62 @@ class ClientViewSet(viewsets.ModelViewSet):
     """
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
+    permission_classes = [permissions.IsAdminUser]
 
 class OrderViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = Client.objects.all()
+    queryset = Order.objects.all()
     serializer_class = OrderSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+class CompanyOwnerViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = CompanyOwner.objects.all()
+    serializer_class = CompanyOwnerSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+class RoleViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Role.objects.all()
+    serializer_class = RoleSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+class ProductViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+class SaleOutOwnerViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Sale_out.objects.all()
+    serializer_class = SaleOutSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+class CompanyViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer
+    permission_classes = [permissions.IsAdminUser]
+
+class SectorViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Sector.objects.all()
+    serializer_class = SectorSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+
