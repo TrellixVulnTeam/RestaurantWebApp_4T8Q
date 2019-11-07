@@ -12,6 +12,9 @@ from rest_framework import serializers
 
 class EmployeeSerializer(serializers.ModelSerializer):
     #is needed for inheritance in this case user
+     #expandable_fields = {
+       #"what": (BelongingSerializer, {"source": "what"}),
+      # "to_who": (FriendSerializer, {"source": "to_who"})
     username = serializers.ReadOnlyField(read_only=True, source="user.username")
     workplace = serializers.ReadOnlyField(read_only=True, source="company.name")
     orders_delivered = serializers.PrimaryKeyRelatedField(many=True, queryset=Order.objects.all())

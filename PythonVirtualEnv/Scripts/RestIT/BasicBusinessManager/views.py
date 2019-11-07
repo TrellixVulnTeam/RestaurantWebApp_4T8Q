@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
 from django.urls import reverse
+from django.core import exceptions
 from django.views.generic.base import TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import sessions
@@ -15,7 +16,7 @@ from .models.order_related_objects.sale_out import Sale_out
 
 from django.http import HttpResponse, HttpResponseRedirect
 #rest
-from rest_framework import viewsets, serializers, status
+from rest_framework import viewsets, serializers, status, response
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import permissions
@@ -39,15 +40,45 @@ class MainView(TemplateView):
         return context
 def settings_view(request):
     if request.user.is_authenticated:
-        return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html')
+        if request.user.client:
+            # HttpResponseRedirect('http://127.0.0.1:8000/rest/client/'+str(id)+'.json')
+            print("client")
+            address = request.user.client.address
+            return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html',{"address":address})
+        elif request.user.company_owner:
+            print("co")
+            return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html')
+        elif request.user.employee:
+            print("e")
+            return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html')
     else:
         return HttpResponseRedirect(reverse('BasicBusinessManager:main'))
 
+#todo - kontakt DJANGO-JSON - HTML, HTML - JSON - DJANGO w settingsach
 def settings_submit_view(request):
     print("submit settings")
     settings_data = request.GET.dict()
     firstname = settings_data.get('firstname')
-    print(firstname)
+    lastname = settings_data.get('lastname')
+    address = settings_data.get('street')
+    if request.user.is_authenticated:
+        try:
+            if request.user.client:
+                print("client")
+                user = Client.objects.get(username = request.user.username)
+                #return HttpResponseRedirect('http://127.0.0.1:8000/rest/client/'+str(request.user.client.id)+'/',{"address":"chuj"})
+                return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html')
+        except request.user.client.DoesNotExist:
+            try:
+                if request.user.company_owner:
+                    print("co")
+                    return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html')
+            except request.user.company_owner.DoesNotExist:
+                if request.user.employee:
+                    print("e")
+                    return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html')
+    else:
+        return HttpResponseRedirect(reverse('BasicBusinessManager:main'))
     return HttpResponseRedirect(reverse('BasicBusinessManager:settings'))
 
 class ContactView(TemplateView):
@@ -161,7 +192,7 @@ class EmployeeViewSet(viewsets.ModelViewSet):
     try:
         queryset = Employee.objects.all()
         serializer_class = EmployeeSerializer
-        permission_classes = [permissions.IsAdminUser]
+        permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     except: Employee.HTTP_404_NOT_FOUND
 
 class ClientViewSet(viewsets.ModelViewSet):
@@ -170,7 +201,7 @@ class ClientViewSet(viewsets.ModelViewSet):
     """
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 class OrderViewSet(viewsets.ModelViewSet):
     """

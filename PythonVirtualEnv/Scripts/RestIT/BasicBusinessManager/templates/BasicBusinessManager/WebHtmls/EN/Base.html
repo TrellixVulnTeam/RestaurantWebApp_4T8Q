@@ -9,14 +9,21 @@
     <!--End of Django-->
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="{% static 'BasicBusinessManager/styles.css' %}">
+    <!--meta tells stuff to search engines-->
+    <meta name="keywords" content="Free, Restaurant, app">
     <meta name="description" content="Free web Restaurant app">
-    <meta name="keywords" content="Free, Restaurant, app"><!--search engines-->
     <meta name="author" content="Seyhak Ly">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><!--responsive web design-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!--jquery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <!--bootstrap-->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!--react-->
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <!--statics-->
     <script src="{% static 'BasicBusinessManager/Scripts/dot-nav.js' %}"></script>
 
     <title>Seyhak Ly</title>
@@ -37,7 +44,13 @@
                 <li class="nav-item"><a class="nav-link" href="{% url 'BasicBusinessManager:main' %}#contact" >Contact</a></li>
     
                 <li class="nav-item ml-auto dropdownContainer">
-                    <a class="nav-link dropdown-toggle ml-auto" data-toggle="dropdown" href="#">Account</a>
+                    <a class="nav-link dropdown-toggle ml-auto" data-toggle="dropdown" href="#">
+                        {% if not request.user.is_authenticated %}
+                        Account
+                        {% else %}
+                        {{request.user.username}}
+                        {% endif %}
+                    </a>
                         <div class="dropdown-menu">
                             <!--<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="accountdropdown">Account</a>-->
                             {% if not request.user.is_authenticated %}
