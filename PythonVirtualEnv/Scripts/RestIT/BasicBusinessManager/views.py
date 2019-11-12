@@ -5,6 +5,9 @@ from django.core import exceptions
 from django.views.generic.base import TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import sessions
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect, csrf_exempt
+from django.http import HttpResponse, HttpResponseRedirect
+#models
 from django.contrib.auth.models import User
 from .models.order_related_objects.company import Company, Sector
 from .models.order_related_objects.order import Order
@@ -14,7 +17,6 @@ from .models.users.client import Client
 from .models.order_related_objects.product import Product
 from .models.order_related_objects.sale_out import Sale_out
 
-from django.http import HttpResponse, HttpResponseRedirect
 #rest
 from rest_framework import viewsets, serializers, status, response
 from rest_framework.decorators import api_view
@@ -38,6 +40,7 @@ class MainView(TemplateView):
             #'var2': self.kwargs.get('var2', None),
         })
         return context
+
 def settings_view(request):
     if request.user.is_authenticated:
         if request.user.client:
@@ -54,20 +57,25 @@ def settings_view(request):
     else:
         return HttpResponseRedirect(reverse('BasicBusinessManager:main'))
 
-#todo - kontakt DJANGO-JSON - HTML, HTML - JSON - DJANGO w settingsach
 def settings_submit_view(request):
+    #http_method_names = ['get', 'post', 'put', 'delete']
     print("submit settings")
-    settings_data = request.GET.dict()
+    if request.method=='PUT':
+        print("Put")
+    '''settings_data = request.GET.dict()
     firstname = settings_data.get('firstname')
     lastname = settings_data.get('lastname')
-    address = settings_data.get('street')
+    address = settings_data.get('street')'''
     if request.user.is_authenticated:
         try:
             if request.user.client:
                 print("client")
-                user = Client.objects.get(username = request.user.username)
+                user = Client.objects.get(pk = request.user.id)
                 #return HttpResponseRedirect('http://127.0.0.1:8000/rest/client/'+str(request.user.client.id)+'/',{"address":"chuj"})
-                return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html')
+                #return redirect('BasicBusinessManager:main')
+
+                #return render(request,'BasicBusinessManager/WebHtmls/EN/Settings.html')
+                return HttpResponseRedirect(reverse('BasicBusinessManager:main'))
         except request.user.client.DoesNotExist:
             try:
                 if request.user.company_owner:

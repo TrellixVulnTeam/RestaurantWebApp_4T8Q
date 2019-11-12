@@ -1,7 +1,7 @@
 $(document).ready(function(){
-    $('.awesome-tooltip').tooltip({
+    /*$('.awesome-tooltip').tooltip({
         placement: 'left'
-    });   
+    }); */
 
     $(window).bind('scroll',function(e){
       dotnavigation();

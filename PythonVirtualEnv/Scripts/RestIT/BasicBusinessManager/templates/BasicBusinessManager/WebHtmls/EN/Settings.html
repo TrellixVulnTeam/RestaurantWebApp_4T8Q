@@ -2,11 +2,12 @@
 {% load static %}
 {% block content %}
 <script src="{% static 'BasicBusinessManager/Scripts/settings.js' %}"></script>
-
 <div id="settings" class="m-5 settings-view">
     <h1 class="h5 text-center m-2">Settings for {{request.user.username}}</h1>
-    <form action ="{% url 'BasicBusinessManager:settings-confirm' %}" method="PUT">
-        <div class="input-group mb-3">
+    <form action ="{% url 'BasicBusinessManager:settings-confirm' %}" data-method="put">
+        {% csrf_token %}
+        <label for="address-group settings-input">Basic data:</label>
+        <div class="input-group mb-3" id='basic-data-group'>
             <div class="input-group-prepend settings-input">
                 <span class="input-group-text settings-input">First name</span>
             </div>
@@ -81,5 +82,9 @@
     </div>
 </form>
 {% endif %}
-
+<script>
+    $(document).ready(function() {
+        $('form').ajaxForm();
+    });
+</script>
 {% endblock %}
