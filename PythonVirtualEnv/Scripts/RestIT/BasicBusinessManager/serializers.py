@@ -29,7 +29,6 @@ class CompanyOwnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = CompanyOwner
         fields = '__all__'
-
 class ClientSerializer(serializers.ModelSerializer): 
     username = serializers.CharField(read_only=True, source="user.username")
     class Meta:

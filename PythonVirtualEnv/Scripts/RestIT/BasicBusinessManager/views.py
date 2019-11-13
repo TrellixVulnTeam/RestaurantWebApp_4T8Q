@@ -56,7 +56,8 @@ def settings_view(request):
             return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html')
     else:
         return HttpResponseRedirect(reverse('BasicBusinessManager:main'))
-
+def chuj(self):
+    self.context['request']._method = 'POST' #override   
 def settings_submit_view(request):
     #http_method_names = ['get', 'post', 'put', 'delete']
     print("submit settings")
@@ -71,11 +72,9 @@ def settings_submit_view(request):
             if request.user.client:
                 print("client")
                 user = Client.objects.get(pk = request.user.id)
-                #return HttpResponseRedirect('http://127.0.0.1:8000/rest/client/'+str(request.user.client.id)+'/',{"address":"chuj"})
-                #return redirect('BasicBusinessManager:main')
-
                 #return render(request,'BasicBusinessManager/WebHtmls/EN/Settings.html')
-                return HttpResponseRedirect(reverse('BasicBusinessManager:main'))
+                #todo poczytać to i zrobić AJAXEM REQUEST - RESPONSE JEBAĆ
+                return render(request,'BasicBusinessManager/WebHtmls/EN/Settings.html',{"_method":"POST","kupa":True})
         except request.user.client.DoesNotExist:
             try:
                 if request.user.company_owner:
@@ -210,7 +209,6 @@ class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
 class OrderViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
