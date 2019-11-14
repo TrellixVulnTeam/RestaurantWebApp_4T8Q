@@ -1,5 +1,6 @@
-$(document).ready(function(){
-    /*$('.awesome-tooltip').tooltip({
+$(document).ready(function()
+{
+      /*$('.awesome-tooltip').tooltip({
         placement: 'left'
     }); */
 
@@ -64,6 +65,5 @@ $(document).ready(function(){
       
         return false;
     });
-
+  });
 /* end dot nav */
-});

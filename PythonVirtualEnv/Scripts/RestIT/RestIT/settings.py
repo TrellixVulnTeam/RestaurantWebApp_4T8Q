@@ -51,7 +51,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+#CSRF_HEADER_NAME = "HTTP_X_CSRFToken"
 ROOT_URLCONF = 'RestIT.urls'
 
 TEMPLATES = [

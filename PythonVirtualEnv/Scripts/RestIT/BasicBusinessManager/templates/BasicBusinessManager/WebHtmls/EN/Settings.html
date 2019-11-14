@@ -4,7 +4,8 @@
 <script src="{% static 'BasicBusinessManager/Scripts/settings.js' %}"></script>
 <div id="settings" class="m-5 settings-view">
     <h1 class="h5 text-center m-2">Settings for {{request.user.username}}</h1>
-    <form action ="{% url 'BasicBusinessManager:settings-confirm' %}" data-method="PUT">
+    <!--action ="{% url 'BasicBusinessManager:main' %}" method = "post"-->
+    <form></form>
         {% csrf_token %}
         <label for="address-group settings-input">Basic data:</label>
         <div class="input-group mb-3" id='basic-data-group'>
@@ -54,7 +55,7 @@
             </div>
             <input type="date" class="form-control settings-input" value="{{request.user.client.birthday|date:'Y-m-d'}}" name="birthday" id="birthday">
         </div>
-        <button type="submit" name="submit" value="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" onclick="buildUserEnhancedObjectFromJSON('{{request.user.client.type_name}}',{{request.user.client.id}},'PUT')" name="submit" value="submit" class="btn btn-primary">Submit</button>
 
     </form>
 </div>
@@ -82,11 +83,7 @@
     </div>
 </form>
 {% endif %}
-{% if kupa is True %}
-<form action="{% url 'BasicBusinessManager:main' %}" method="POST">
-    <input name="_method" value="PUT">
-</form>
-{% endif %}
+<!--Ajax to form plugin-->
 <script>
     $(document).ready(function() {
         $('form').ajaxForm();

@@ -47,7 +47,7 @@ def settings_view(request):
             # HttpResponseRedirect('http://127.0.0.1:8000/rest/client/'+str(id)+'.json')
             print("client")
             address = request.user.client.address
-            return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html',{"address":address})
+            return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html')
         elif request.user.company_owner:
             print("co")
             return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html')
@@ -73,8 +73,7 @@ def settings_submit_view(request):
                 print("client")
                 user = Client.objects.get(pk = request.user.id)
                 #return render(request,'BasicBusinessManager/WebHtmls/EN/Settings.html')
-                #todo poczytać to i zrobić AJAXEM REQUEST - RESPONSE JEBAĆ
-                return render(request,'BasicBusinessManager/WebHtmls/EN/Settings.html',{"_method":"POST","kupa":True})
+                return render(request,'BasicBusinessManager/WebHtmls/EN/Settings.html',{"go_home":True})
         except request.user.client.DoesNotExist:
             try:
                 if request.user.company_owner:

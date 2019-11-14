@@ -11,7 +11,7 @@ $("body").bind("ajaxSend", function(elm, xhr, s){
      xhr.setRequestHeader('X-CSRF-Token', getCSRFTokenValue());
   }
 });*/
-
+//////////////////////////////////////CSRF code/////////////////////////////
 function getCookie(name) {
   var cookieValue = null;
   if (document.cookie && document.cookie !== '') {
@@ -27,21 +27,23 @@ function getCookie(name) {
   }
   return cookieValue;
 }
-var csrftoken = getCookie('csrftoken');
 
 function csrfSafeMethod(method) {
   // these HTTP methods do not require CSRF protection
   return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
+//  $ajaxSetup - Sets the default values for future AJAX requests, beforeSend: runs function before sending reequest
 $.ajaxSetup({
-  beforeSend: function(xhr, settings) {
+  beforeSend: function(xhr, settings) 
+  {     
+      var csrftoken = getCookie('csrftoken');
       if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
           xhr.setRequestHeader("X-CSRFToken", csrftoken);
       }
   }
 });
-
-function buildUserEnhancedObjectFromJSON(typeData="", userID=0)
+//////////////////////////END OF CSRF CODE///////////////////////////////////////////
+function buildUserEnhancedObjectFromJSON(typeData="", userID=0,operationType="GET")
 {
   //builds object from json to Client/Employee/CO
   var requestObject ="";
@@ -68,10 +70,20 @@ function buildUserEnhancedObjectFromJSON(typeData="", userID=0)
   {
     baseURL = 'http://127.0.0.1:8000/rest/';
     requestURL = baseURL+requestObject+userID+'.json';
-    getUserObjectFromJSON(requestURL);
+    switch(operationType)
+    {
+      case "PUT":
+        putUserObject(requestURL);
+        break;
+      case "GET":
+        fillTextboxesWithGetUserObjectFromJSON(requestURL);
+        break;
+      default:
+        break;
+    }
   }
 }
-function getUserObjectFromJSON(fullURLForJSON)
+function fillTextboxesWithGetUserObjectFromJSON(fullURLForJSON)
 {
   var request = new XMLHttpRequest();
   request.open('GET', fullURLForJSON);
@@ -87,4 +99,29 @@ function loadSettingsFormGettingDataFromObject(userObject)
     //document.getElementById("settings").innerHTML = chuj['username'];
     
   }
+}
+function putUserObject(url)
+{
+  var csrftoken = getCookie('csrftoken');
+  /*var xhttp = new XMLHttpRequest()
+  xhttp.open("POST", url, true);
+  xhttp.setRequestHeader("X-CSRFToken", csrftoken);
+  xhttp.send();*/
+  var user = new Object; 
+  var jsonFile;
+  //Przetestować czy PUT działa
+  $.getJSON(url,function(data)
+  {
+    jsonFile=data;
+    console.log(jsonFile);
+    $.ajax({
+      type: "PUT",
+      url: url,
+      // CSRF: csrftoken,
+      //data: JSON.stringify({ x: 5, y: 6 }),
+      data: jsonFile,
+      contentType: "application/json",
+    });
+  });
+  
 }
