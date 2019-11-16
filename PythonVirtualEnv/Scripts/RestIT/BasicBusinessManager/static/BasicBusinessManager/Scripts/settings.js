@@ -109,16 +109,22 @@ function putUserObject(url)
   xhttp.send();*/
   var user = new Object; 
   var jsonFile;
-  //Przetestować czy PUT działa
+  //Tworzenie JSON działa PUT działa, ale póki co dla Clienta - jutro stworzyć osobne jsony i wysłać 2xPUT 
   $.getJSON(url,function(data)
   {
-    jsonFile=data;
+    jsonFile=JSON.stringify(data);
+    console.log(jsonFile);
+    tempObj = JSON.parse(jsonFile);
+    tempObj.address = $("#street").val();
+    tempObj.birthday = $("#birthday").val();
+    tempObj.firstname = $("#firstname").val();
+    tempObj.lastname = $("#lastname").val();
+    jsonFile = JSON.stringify(tempObj);
     console.log(jsonFile);
     $.ajax({
       type: "PUT",
       url: url,
-      // CSRF: csrftoken,
-      //data: JSON.stringify({ x: 5, y: 6 }),
+      CSRF: csrftoken,
       data: jsonFile,
       contentType: "application/json",
     });

@@ -12,6 +12,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 app_name = 'BasicBusinessManager'
 router = routers.DefaultRouter()
 #in router urls:
+router.register(r'user',views.UserViewSet)
 router.register(r'employee', views.EmployeeViewSet)
 router.register(r'client', views.ClientViewSet)
 router.register(r'order',views.OrderViewSet)

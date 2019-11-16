@@ -23,6 +23,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import permissions
 from BasicBusinessManager.serializers import *
+from BasicBusinessManager.permissions import *
 # Create your views here.
 
 
@@ -191,20 +192,30 @@ class AccountVerifying:
 #                 #
 # REST - Viewsets #
 #                 #
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    permission_classes = [IsOwnerOrReadOnly]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
 class EmployeeViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
+    permission_classes = [IsOwnerOrReadOnly]
     try:
         queryset = Employee.objects.all()
         serializer_class = EmployeeSerializer
-        permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+        permission_classes = [IsOwnerOrReadOnly]
     except: Employee.HTTP_404_NOT_FOUND
 
 class ClientViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
+    permission_classes = [IsOwnerOrReadOnly]
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
