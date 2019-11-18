@@ -45,7 +45,6 @@ class MainView(TemplateView):
 def settings_view(request):
     if request.user.is_authenticated:
         if request.user.client:
-            # HttpResponseRedirect('http://127.0.0.1:8000/rest/client/'+str(id)+'.json')
             print("client")
             address = request.user.client.address
             return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html')
@@ -57,23 +56,14 @@ def settings_view(request):
             return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html')
     else:
         return HttpResponseRedirect(reverse('BasicBusinessManager:main'))
-def chuj(self):
-    self.context['request']._method = 'POST' #override   
 def settings_submit_view(request):
     #http_method_names = ['get', 'post', 'put', 'delete']
     print("submit settings")
-    if request.method=='PUT':
-        print("Put")
-    '''settings_data = request.GET.dict()
-    firstname = settings_data.get('firstname')
-    lastname = settings_data.get('lastname')
-    address = settings_data.get('street')'''
     if request.user.is_authenticated:
         try:
             if request.user.client:
                 print("client")
                 user = Client.objects.get(pk = request.user.id)
-                #return render(request,'BasicBusinessManager/WebHtmls/EN/Settings.html')
                 return render(request,'BasicBusinessManager/WebHtmls/EN/Settings.html',{"go_home":True})
         except request.user.client.DoesNotExist:
             try:
@@ -196,9 +186,11 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    permission_classes = [IsOwnerOrReadOnly]
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+    try:
+        queryset = User.objects.all()
+        serializer_class = UserSerializer
+        lookup_field = 'username'#it shows what is primary key for lookup detail field
+    except: User.HTTP_404_NOT_FOUND
 
 class EmployeeViewSet(viewsets.ModelViewSet):
     """
@@ -218,14 +210,14 @@ class ClientViewSet(viewsets.ModelViewSet):
     permission_classes = [IsOwnerOrReadOnly]
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsOwnerOrReadOnly]
 class OrderViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [IsOwnerOrReadOnly]
 
 class CompanyOwnerViewSet(viewsets.ModelViewSet):
     """
@@ -233,7 +225,7 @@ class CompanyOwnerViewSet(viewsets.ModelViewSet):
     """
     queryset = CompanyOwner.objects.all()
     serializer_class = CompanyOwnerSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [IsOwnerOrReadOnly]
 
 class RoleViewSet(viewsets.ModelViewSet):
     """
@@ -241,7 +233,7 @@ class RoleViewSet(viewsets.ModelViewSet):
     """
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [IsOwnerOrReadOnly]
 
 class ProductViewSet(viewsets.ModelViewSet):
     """
@@ -249,7 +241,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     """
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [IsOwnerOrReadOnly]
 
 class SaleOutOwnerViewSet(viewsets.ModelViewSet):
     """
@@ -257,7 +249,7 @@ class SaleOutOwnerViewSet(viewsets.ModelViewSet):
     """
     queryset = Sale_out.objects.all()
     serializer_class = SaleOutSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [IsOwnerOrReadOnly]
 
 class CompanyViewSet(viewsets.ModelViewSet):
     """
@@ -265,7 +257,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
     """
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [IsOwnerOrReadOnly]
 
 class SectorViewSet(viewsets.ModelViewSet):
     """
@@ -273,6 +265,6 @@ class SectorViewSet(viewsets.ModelViewSet):
     """
     queryset = Sector.objects.all()
     serializer_class = SectorSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [IsOwnerOrReadOnly]
 
 

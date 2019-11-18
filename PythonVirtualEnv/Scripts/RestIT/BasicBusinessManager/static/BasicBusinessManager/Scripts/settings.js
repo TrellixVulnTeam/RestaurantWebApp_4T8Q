@@ -1,16 +1,3 @@
-/*$.ajax({
-  type: "POST",
-  url: "file",
-  data: { CSRF: getCSRFTokenValue()}
-})
-.done(function( msg ) {
-  alert( "Data: " + msg );
-});
-$("body").bind("ajaxSend", function(elm, xhr, s){
-  if (s.type == "POST") {
-     xhr.setRequestHeader('X-CSRF-Token', getCSRFTokenValue());
-  }
-});*/
 //////////////////////////////////////CSRF code/////////////////////////////
 function getCookie(name) {
   var cookieValue = null;
@@ -43,8 +30,9 @@ $.ajaxSetup({
   }
 });
 //////////////////////////END OF CSRF CODE///////////////////////////////////////////
-function buildUserEnhancedObjectFromJSON(typeData="", userID=0,operationType="GET")
+function buildUserEnhancedObjectFromJSON(typeData="", userID=0,operationType="GET",username="")
 {
+  //first function 
   //builds object from json to Client/Employee/CO
   var requestObject ="";
   var requestURL="";
@@ -73,7 +61,8 @@ function buildUserEnhancedObjectFromJSON(typeData="", userID=0,operationType="GE
     switch(operationType)
     {
       case "PUT":
-        putUserObject(requestURL);
+        putUserObject(requestURL,username);
+        //putClientObject(requestURL);
         break;
       case "GET":
         fillTextboxesWithGetUserObjectFromJSON(requestURL);
@@ -100,7 +89,7 @@ function loadSettingsFormGettingDataFromObject(userObject)
     
   }
 }
-function putUserObject(url)
+function putClientObject(url)
 {
   var csrftoken = getCookie('csrftoken');
   /*var xhttp = new XMLHttpRequest()
@@ -109,16 +98,12 @@ function putUserObject(url)
   xhttp.send();*/
   var user = new Object; 
   var jsonFile;
-  //Tworzenie JSON działa PUT działa, ale póki co dla Clienta - jutro stworzyć osobne jsony i wysłać 2xPUT 
   $.getJSON(url,function(data)
   {
     jsonFile=JSON.stringify(data);
-    console.log(jsonFile);
     tempObj = JSON.parse(jsonFile);
     tempObj.address = $("#street").val();
     tempObj.birthday = $("#birthday").val();
-    tempObj.firstname = $("#firstname").val();
-    tempObj.lastname = $("#lastname").val();
     jsonFile = JSON.stringify(tempObj);
     console.log(jsonFile);
     $.ajax({
@@ -129,5 +114,41 @@ function putUserObject(url)
       contentType: "application/json",
     });
   });
-  
+}
+function createURLForUserObject(url,username)
+{
+  var temp = url.split("/");
+  temp[4]="user";
+  temp[temp.length-1]=username+".json";
+  var finalUrl = "";
+  for(i = 0;i < temp.length; i++)
+  {
+    finalUrl+=temp[i] +"/";
+  }
+  return finalUrl;
+}
+//todo - ogarnąć pozostałe typy kont
+function putUserObject(url,username)
+{
+  var csrftoken = getCookie('csrftoken');
+  var user = new Object; 
+  var jsonFile;
+  url = createURLForUserObject(url,username);
+  console.log(url);
+  $.getJSON(url,function(data)
+  {
+    jsonFile=JSON.stringify(data);
+    tempObj = JSON.parse(jsonFile);
+    tempObj.first_name = $("#firstname").val();
+    tempObj.last_name = $("#lastname").val();
+    jsonFile = JSON.stringify(tempObj);
+    console.log(jsonFile);
+    $.ajax({
+      type: "PUT",
+      url: url,
+      CSRF: csrftoken,
+      data: jsonFile,
+      contentType: "application/json",
+    });
+  });
 }

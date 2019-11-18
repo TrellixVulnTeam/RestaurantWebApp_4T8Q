@@ -55,7 +55,7 @@
             </div>
             <input type="date" class="form-control settings-input" value="{{request.user.client.birthday|date:'Y-m-d'}}" name="birthday" id="birthday">
         </div>
-        <button type="submit" onclick="buildUserEnhancedObjectFromJSON('{{request.user.client.type_name}}',{{request.user.client.id}},'PUT')" name="submit" value="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" onclick="buildUserEnhancedObjectFromJSON('{{request.user.client.type_name}}',{{request.user.client.id}},'PUT','{{request.user.username}}')" name="submit" value="submit" class="btn btn-primary">Submit</button>
 
     </form>
 </div>
