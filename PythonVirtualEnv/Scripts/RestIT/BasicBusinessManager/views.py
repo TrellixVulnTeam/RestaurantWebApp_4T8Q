@@ -44,39 +44,25 @@ class MainView(TemplateView):
 
 def settings_view(request):
     if request.user.is_authenticated:
-        if request.user.client:
-            print("client")
-            address = request.user.client.address
-            return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html')
-        elif request.user.company_owner:
-            print("co")
-            return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html')
-        elif request.user.employee:
-            print("e")
-            return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html')
+        if hasattr(request.user,'client'):
+            return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html',{"account_type":'Client'})
+        elif hasattr(request.user,'companyowner'):
+            return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html',{"account_type":'CompanyOwner'})
+        elif hasattr(request.user,'employee'):
+            return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html',{"account_type":'Employee'})
     else:
         return HttpResponseRedirect(reverse('BasicBusinessManager:main'))
 def settings_submit_view(request):
     #http_method_names = ['get', 'post', 'put', 'delete']
     print("submit settings")
     if request.user.is_authenticated:
-        try:
-            if request.user.client:
-                print("client")
-                user = Client.objects.get(pk = request.user.id)
-                return render(request,'BasicBusinessManager/WebHtmls/EN/Settings.html',{"go_home":True})
-        except request.user.client.DoesNotExist:
-            try:
-                if request.user.company_owner:
-                    print("co")
-                    return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html')
-            except request.user.company_owner.DoesNotExist:
-                if request.user.employee:
-                    print("e")
-                    return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html')
+        if hasattr(request.user,'client')or hasattr(request.user,'companyowner')or hasattr(request.user,'employee'):
+            user = Client.objects.get(pk = request.user.id)
+            return render(request, 'BasicBusinessManager/WebHtmls/EN/Settings.html')
+        else:
+            return HttpResponseRedirect(reverse('BasicBusinessManager:main'))
     else:
-        return HttpResponseRedirect(reverse('BasicBusinessManager:main'))
-    return HttpResponseRedirect(reverse('BasicBusinessManager:settings'))
+        return HttpResponseRedirect(reverse('BasicBusinessManager:settings'))
 
 class ContactView(TemplateView):
     template_name = 'BasicBusinessManager/WebHtmls/EN/Contact.html'

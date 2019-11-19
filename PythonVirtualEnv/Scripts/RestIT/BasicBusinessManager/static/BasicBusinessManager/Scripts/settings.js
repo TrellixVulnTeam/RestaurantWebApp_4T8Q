@@ -36,33 +36,68 @@ function buildUserEnhancedObjectFromJSON(typeData="", userID=0,operationType="GE
   //builds object from json to Client/Employee/CO
   var requestObject ="";
   var requestURL="";
+  baseURL = 'http://127.0.0.1:8000/rest/';
   switch(typeData)
   {
     case "Client":
       requestObject = "client/";
+      requestURL = createURLForEnhancedUserObject(baseURL,requestObject,userID)
+      switch(operationType)
+      {
+        case "PUT":
+          putClientObject(requestURL);
+          break;
+        case "GET":
+          fillTextboxesWithGetUserObjectFromJSON(requestURL);
+          break;
+        default:
+          break;
+      }
       break;
     case "CompanyOwner":
       requestObject = "company_owner/";
+      requestURL = createURLForEnhancedUserObject(baseURL,requestObject,userID)
+      switch(operationType)
+      {
+        case "PUT":
+          putClientObject(requestURL);
+          break;
+        case "GET":
+          fillTextboxesWithGetUserObjectFromJSON(requestURL);
+          break;
+        default:
+          break;
+      }
       break;
     case "Employee":
         requestObject = "employee/";
+        requestURL = createURLForEnhancedUserObject(baseURL,requestObject,userID)
+        switch(operationType)
+        {
+          case "PUT":
+            putClientObject(requestURL);
+            break;
+          case "GET":
+            fillTextboxesWithGetUserObjectFromJSON(requestURL);
+            break;
+          default:
+            break;
+        }
       break;
     default:
         requestObject = "rest";
   }
   if(requestObject === "rest")
   {
-    alert("bug appeared");
+    alert("unknown accout type");
   }
   else
   {
-    baseURL = 'http://127.0.0.1:8000/rest/';
-    requestURL = baseURL+requestObject+userID+'.json';
     switch(operationType)
     {
       case "PUT":
-        putUserObject(requestURL,username);
-        //putClientObject(requestURL);
+        requestObjectForBasicUser = createURLForEnhancedUserObject(baseURL,"user",username);
+        putUserObject(requestObjectForBasicUser);
         break;
       case "GET":
         fillTextboxesWithGetUserObjectFromJSON(requestURL);
@@ -91,11 +126,8 @@ function loadSettingsFormGettingDataFromObject(userObject)
 }
 function putClientObject(url)
 {
+  //todo <---------ogarnięty backend - przesyłanie funkcji. Zrobić żeby działał PUT dla wszystkich (client chyba działa)
   var csrftoken = getCookie('csrftoken');
-  /*var xhttp = new XMLHttpRequest()
-  xhttp.open("POST", url, true);
-  xhttp.setRequestHeader("X-CSRFToken", csrftoken);
-  xhttp.send();*/
   var user = new Object; 
   var jsonFile;
   $.getJSON(url,function(data)
@@ -115,25 +147,56 @@ function putClientObject(url)
     });
   });
 }
-function createURLForUserObject(url,username)
-{
-  var temp = url.split("/");
-  temp[4]="user";
-  temp[temp.length-1]=username+".json";
-  var finalUrl = "";
-  for(i = 0;i < temp.length; i++)
-  {
-    finalUrl+=temp[i] +"/";
-  }
-  return finalUrl;
-}
-//todo - ogarnąć pozostałe typy kont
-function putUserObject(url,username)
+function putEmployeeObject(url)
 {
   var csrftoken = getCookie('csrftoken');
   var user = new Object; 
   var jsonFile;
-  url = createURLForUserObject(url,username);
+  $.getJSON(url,function(data)
+  {
+    jsonFile=JSON.stringify(data);
+    tempObj = JSON.parse(jsonFile);
+    tempObj.address = $("#street").val();
+    tempObj.birthday = $("#birthday").val();
+    jsonFile = JSON.stringify(tempObj);
+    console.log(jsonFile);
+    $.ajax({
+      type: "PUT",
+      url: url,
+      CSRF: csrftoken,
+      data: jsonFile,
+      contentType: "application/json",
+    });
+  });
+}
+function putCompanyOwnerObject(url)
+{
+  var csrftoken = getCookie('csrftoken');
+  var user = new Object; 
+  var jsonFile;
+  $.getJSON(url,function(data)
+  {
+    jsonFile=JSON.stringify(data);
+    tempObj = JSON.parse(jsonFile);
+    tempObj.address = $("#street").val();
+    tempObj.birthday = $("#birthday").val();
+    jsonFile = JSON.stringify(tempObj);
+    console.log(jsonFile);
+    $.ajax({
+      type: "PUT",
+      url: url,
+      CSRF: csrftoken,
+      data: jsonFile,
+      contentType: "application/json",
+    });
+  });
+}
+function putUserObject(url)
+{
+  var csrftoken = getCookie('csrftoken');
+  var user = new Object; 
+  var jsonFile;
+  url = createURLForEnhancedUserObject(url,username,"user");
   console.log(url);
   $.getJSON(url,function(data)
   {
@@ -151,4 +214,10 @@ function putUserObject(url,username)
       contentType: "application/json",
     });
   });
+}
+function createURLForEnhancedUserObject(base_domain_rest_url="",account_type="",username="")
+{
+  var temp = "";
+  temp = base_domain_rest_url+account_type+username+".json";
+  return temp;
 }

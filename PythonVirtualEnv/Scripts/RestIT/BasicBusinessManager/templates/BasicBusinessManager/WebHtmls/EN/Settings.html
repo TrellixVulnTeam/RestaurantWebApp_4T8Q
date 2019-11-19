@@ -47,9 +47,10 @@
                     <input type="text" class="form-control" name="country" id="country">-->
             </div>
         </div>
-{% if request.user.type_name is Client %}
+{% if account_type == "Client" %}
+        <script>window.onload=buildUserEnhancedObjectFromJSON("{{request.user.client.type_name}}",{{request.user.client.id}},'GET','{{request.user.username}}');</script>
+        <!--birthday-->
         <div class="input-group mb-3">
-            <script>window.onload=buildUserEnhancedObjectFromJSON("{{request.user.client.type_name}}",{{request.user.client.id}});</script>
             <div class="input-group-prepend settings-input">
                 <span class="input-group-text settings-input">Birthday</span>
             </div>
@@ -59,29 +60,35 @@
 
     </form>
 </div>
-{% elif request.user.type_name is CompanyOwner %}
-    <script>window.onload=buildUserEnhancedObjectFromJSON("{{request.user.company_owner.type_name}}",{{request.user.company_owner.id}});</script>
-    <button type="submit" name="submit" value="submit" class="btn btn-primary">Submit</button>
+{% elif account_type == "CompanyOwner" %}
+    <script>window.onload=buildUserEnhancedObjectFromJSON("{{account_type}}",{{request.user.companyowner.id}});</script>
+    <!--birthday-->
+    <div class="input-group mb-3">
+        <div class="input-group-prepend settings-input">
+            <span class="input-group-text settings-input">Birthday</span>
+        </div>
+        <input type="date" class="form-control settings-input" value="{{request.user.companyowner.birthday|date:'Y-m-d'}}" name="birthday" id="birthday">
+    </div>
+    <button type="submit" onclick="buildUserEnhancedObjectFromJSON('{{request.user.companyowner.type_name}}',{{request.user.companyowner.id}},'PUT','{{request.user.username}}')" name="submit" value="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
-<form >
-    <div class="form-group">
-   
-    </div>
-</form>
-{% elif request.user.type_name is Employee %}
+
+{% elif account_type == "Employee" %}
     <script>window.onload=buildUserEnhancedObjectFromJSON("{{request.user.employee.type_name}}",{{request.user.employee.id}});</script>
+    <!--birthday-->
+    <div class="input-group mb-3">
+        <div class="input-group-prepend settings-input">
+            <span class="input-group-text settings-input">Birthday</span>
+        </div>
+        <input type="date" class="form-control settings-input" value="{{request.user.employee.birthday|date:'Y-m-d'}}" name="birthday" id="birthday">
+    </div>
     <span class="input-group-text" >Salary per month</span>
     </div>
     <input readonly type="number" class="form-control" name="month-salary" id="month-salary">
-    <button type="submit" name="submit" value="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" onclick="buildUserEnhancedObjectFromJSON('{{request.user.employee.type_name}}',{{request.user.employee.id}},'PUT','{{request.user.username}}')" name="submit" value="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
-<form >
-    <div class="form-group">
-   
-    </div>
-</form>
+
 {% endif %}
 <!--Ajax to form plugin-->
 <script>
