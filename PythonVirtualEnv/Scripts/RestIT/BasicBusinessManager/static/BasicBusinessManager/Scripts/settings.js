@@ -41,11 +41,12 @@ function buildUserEnhancedObjectFromJSON(typeData="", userID=0,operationType="GE
   {
     case "Client":
       requestObject = "client/";
-      requestURL = createURLForEnhancedUserObject(baseURL,requestObject,userID)
+      requestURL = getUrlForEnhancedUserObject(baseURL,requestObject,userID)
       switch(operationType)
       {
         case "PUT":
-          putClientObject(requestURL);
+          idVariablesArray=["#street","address","#birthday","birthday"];
+          putObject(requestURL,idVariablesArray);
           break;
         case "GET":
           fillTextboxesWithGetUserObjectFromJSON(requestURL);
@@ -56,11 +57,12 @@ function buildUserEnhancedObjectFromJSON(typeData="", userID=0,operationType="GE
       break;
     case "CompanyOwner":
       requestObject = "company_owner/";
-      requestURL = createURLForEnhancedUserObject(baseURL,requestObject,userID)
+      requestURL = getUrlForEnhancedUserObject(baseURL,requestObject,userID)
       switch(operationType)
       {
         case "PUT":
-          putClientObject(requestURL);
+          idVariablesArray=["#birthday","birthday","#street","address"];
+          putObject(requestURL,idVariablesArray);
           break;
         case "GET":
           fillTextboxesWithGetUserObjectFromJSON(requestURL);
@@ -71,11 +73,12 @@ function buildUserEnhancedObjectFromJSON(typeData="", userID=0,operationType="GE
       break;
     case "Employee":
         requestObject = "employee/";
-        requestURL = createURLForEnhancedUserObject(baseURL,requestObject,userID)
+        requestURL = getUrlForEnhancedUserObject(baseURL,requestObject,userID)
         switch(operationType)
         {
           case "PUT":
-            putClientObject(requestURL);
+            idVariablesArray=["#birthday","birthday","#street","address"];
+            putObject(requestURL,idVariablesArray);
             break;
           case "GET":
             fillTextboxesWithGetUserObjectFromJSON(requestURL);
@@ -96,8 +99,9 @@ function buildUserEnhancedObjectFromJSON(typeData="", userID=0,operationType="GE
     switch(operationType)
     {
       case "PUT":
-        requestObjectForBasicUser = createURLForEnhancedUserObject(baseURL,"user",username);
-        putUserObject(requestObjectForBasicUser);
+        requestObjectForBasicUser = getUrlForEnhancedUserObject(baseURL,"user/",username);
+        idVariablesArray=["#firstname","first_name","#lastname","last_name"];
+        putObject(requestObjectForBasicUser,idVariablesArray);
         break;
       case "GET":
         fillTextboxesWithGetUserObjectFromJSON(requestURL);
@@ -124,7 +128,19 @@ function loadSettingsFormGettingDataFromObject(userObject)
     
   }
 }
-function putClientObject(url)
+function getJsonObjectWithDataFromHTML(arrayOfIds=[],jsonFile)
+{
+  tempObj = JSON.parse(jsonFile);
+  for(i=0;i<=arrayOfIds.length/2;i+=2)
+  {
+  var tempString = arrayOfIds[i+1];
+  tempObj[tempString] = $(arrayOfIds[i]).val();
+  }
+  jsonFile = JSON.stringify(tempObj);
+  return jsonFile;
+}
+
+function putObject(url,idVariablesArray=[])
 {
   //todo <---------ogarnięty backend - przesyłanie funkcji. Zrobić żeby działał PUT dla wszystkich (client chyba działa)
   var csrftoken = getCookie('csrftoken');
@@ -133,10 +149,7 @@ function putClientObject(url)
   $.getJSON(url,function(data)
   {
     jsonFile=JSON.stringify(data);
-    tempObj = JSON.parse(jsonFile);
-    tempObj.address = $("#street").val();
-    tempObj.birthday = $("#birthday").val();
-    jsonFile = JSON.stringify(tempObj);
+    jsonFile = getJsonObjectWithDataFromHTML(idVariablesArray,jsonFile);
     console.log(jsonFile);
     $.ajax({
       type: "PUT",
@@ -147,75 +160,7 @@ function putClientObject(url)
     });
   });
 }
-function putEmployeeObject(url)
-{
-  var csrftoken = getCookie('csrftoken');
-  var user = new Object; 
-  var jsonFile;
-  $.getJSON(url,function(data)
-  {
-    jsonFile=JSON.stringify(data);
-    tempObj = JSON.parse(jsonFile);
-    tempObj.address = $("#street").val();
-    tempObj.birthday = $("#birthday").val();
-    jsonFile = JSON.stringify(tempObj);
-    console.log(jsonFile);
-    $.ajax({
-      type: "PUT",
-      url: url,
-      CSRF: csrftoken,
-      data: jsonFile,
-      contentType: "application/json",
-    });
-  });
-}
-function putCompanyOwnerObject(url)
-{
-  var csrftoken = getCookie('csrftoken');
-  var user = new Object; 
-  var jsonFile;
-  $.getJSON(url,function(data)
-  {
-    jsonFile=JSON.stringify(data);
-    tempObj = JSON.parse(jsonFile);
-    tempObj.address = $("#street").val();
-    tempObj.birthday = $("#birthday").val();
-    jsonFile = JSON.stringify(tempObj);
-    console.log(jsonFile);
-    $.ajax({
-      type: "PUT",
-      url: url,
-      CSRF: csrftoken,
-      data: jsonFile,
-      contentType: "application/json",
-    });
-  });
-}
-function putUserObject(url)
-{
-  var csrftoken = getCookie('csrftoken');
-  var user = new Object; 
-  var jsonFile;
-  url = createURLForEnhancedUserObject(url,username,"user");
-  console.log(url);
-  $.getJSON(url,function(data)
-  {
-    jsonFile=JSON.stringify(data);
-    tempObj = JSON.parse(jsonFile);
-    tempObj.first_name = $("#firstname").val();
-    tempObj.last_name = $("#lastname").val();
-    jsonFile = JSON.stringify(tempObj);
-    console.log(jsonFile);
-    $.ajax({
-      type: "PUT",
-      url: url,
-      CSRF: csrftoken,
-      data: jsonFile,
-      contentType: "application/json",
-    });
-  });
-}
-function createURLForEnhancedUserObject(base_domain_rest_url="",account_type="",username="")
+function getUrlForEnhancedUserObject(base_domain_rest_url="",account_type="",username="")
 {
   var temp = "";
   temp = base_domain_rest_url+account_type+username+".json";

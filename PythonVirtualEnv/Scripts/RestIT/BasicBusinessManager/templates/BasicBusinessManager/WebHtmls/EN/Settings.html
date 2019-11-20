@@ -82,9 +82,12 @@
         </div>
         <input type="date" class="form-control settings-input" value="{{request.user.employee.birthday|date:'Y-m-d'}}" name="birthday" id="birthday">
     </div>
-    <span class="input-group-text" >Salary per month</span>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend mb-3">
+            <span class="input-group-text">Salary per month</span>
+        </div>
+        <input readonly type="text" class="form-control" name="month-salary" id="month-salary" value="{{request.user.employee.salary_per_month}}">
     </div>
-    <input readonly type="number" class="form-control" name="month-salary" id="month-salary">
     <button type="submit" onclick="buildUserEnhancedObjectFromJSON('{{request.user.employee.type_name}}',{{request.user.employee.id}},'PUT','{{request.user.username}}')" name="submit" value="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>

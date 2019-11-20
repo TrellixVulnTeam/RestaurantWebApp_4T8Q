@@ -1,4 +1,12 @@
 /*ID>class,pseudoclass>tag selectors,pseudoelements*/
+section
+{
+    height: 100vh;
+}
+a
+{
+    text-decoration: none;
+}
 #carousel-txt
 {
     font-size:3em;
@@ -25,10 +33,7 @@ text-decoration: none;
 {
  position: relative;
 }
-section
-{
-    height: 100vh;
-}
+
 .scrollSide
 {
     height: 100vh;
@@ -45,9 +50,14 @@ section
     width: 100%;
     object-fit: cover;
 }
+#contact
+{
+    height: 100%;
+}
 #contact-display
 {
     margin-top: 5%;
+    width:10vh;
 }
 /*side nav*/
 #dot-nav{
