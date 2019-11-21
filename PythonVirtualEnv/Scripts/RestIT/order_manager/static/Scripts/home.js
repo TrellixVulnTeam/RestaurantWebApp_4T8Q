@@ -30,7 +30,10 @@ $.ajaxSetup({
   }
 });
 //////////////////////////END OF CSRF CODE///////////////////////////////////////////
+
+  //this part will be done with React.js
+
 function runRestItUI(typeData="", userID=0,operationType="GET",username="")
 {
-  //this part will be done with React.js
+  
 }
