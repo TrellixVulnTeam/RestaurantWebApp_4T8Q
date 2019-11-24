@@ -8,15 +8,9 @@ from rest_framework import routers
 from rest_framework.urlpatterns import format_suffix_patterns
 
 #namespace
-app_name = 'order_manager'
-router = routers.DefaultRouter()
-#in router urls:
-'''router.register(r'user',views.UserViewSet,base_name='user')
-'''
+app_name = 'react_tutorial'
 urlpatterns = [
-    path('en/home', views.MainView.as_view(), name='home'),
-    path('rest/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('en/react_tutorial', views.MainView.as_view(), name='home'),
 ]
 
 #strange bug - it doesnt want to work

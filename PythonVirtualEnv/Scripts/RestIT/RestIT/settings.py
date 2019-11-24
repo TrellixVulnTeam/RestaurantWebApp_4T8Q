@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'order_manager.apps.OrderPutterConfig',
     'BasicBusinessManager.apps.BasicbusinessmanagerConfig',
+    'react_tutorial.apps.ReactTutorialConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

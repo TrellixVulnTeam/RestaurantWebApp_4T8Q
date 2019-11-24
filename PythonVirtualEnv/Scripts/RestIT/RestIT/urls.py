@@ -19,5 +19,6 @@ from django.urls import path, include
 urlpatterns = [
     path('',include('BasicBusinessManager.urls')),
     path('',include('order_manager.urls')),
+    path('',include('react_tutorial.urls')),
     path('admin/', admin.site.urls),
 ]
