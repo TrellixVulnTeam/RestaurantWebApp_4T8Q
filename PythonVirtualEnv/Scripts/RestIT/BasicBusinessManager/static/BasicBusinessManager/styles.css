@@ -5,6 +5,7 @@ section
 }
 a
 {
+    color: black !important;
     text-decoration: none !important;
 }
 #carousel-txt

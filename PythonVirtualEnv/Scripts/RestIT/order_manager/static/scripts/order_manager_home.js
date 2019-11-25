@@ -32,8 +32,50 @@ $.ajaxSetup({
 //////////////////////////END OF CSRF CODE///////////////////////////////////////////
 
   //this part will be done with React.js
+function getOrdersFromDatabase()
+{
+
+}
 
 function runRestItUI(typeData="", userID=0,operationType="GET",username="")
 {
-  
+  class Box extends React.Component{
+    render()
+    {
+      return
+      (
+        //here box will be rendered
+        <div class="order_box">
+
+        </div>
+      );
+    }
+  }
+  class OrderManager extends React.Component
+  {
+    constructor(props)
+    {
+      super(props);
+      this.state = 
+      {
+        history:[
+          {
+
+          }
+        ],
+        
+      }
+    }
+    render()
+    {
+      
+      return(
+        <div class="order_box_container">
+          
+        </div>
+      );
+    }
+  }
+
+  ReactDOM.render(<Game />, document.getElementById("root"));
 }

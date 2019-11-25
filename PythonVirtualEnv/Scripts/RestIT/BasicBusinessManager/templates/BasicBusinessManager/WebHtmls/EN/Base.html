@@ -28,7 +28,34 @@
     <!--AJAX-->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="{% static 'BasicBusinessManager/Scripts/ajax-form.js' %}"></script>
-    
+    <!--interapp script-->
+    <script>
+        function deleteActiveTab(){
+            tabsArray = $(".nav-link");
+            for(var i=0; i<tabsArray.length;i++)
+            {
+                if(tabsArray[i].classList.contains('active'))
+                {
+                    tabsArray[i].classList.remove('active');
+                }
+            }
+        }
+        function changeActiveTab(){
+            deleteActiveTab();
+            var url = window.location.href;
+            url = url.substr(21);
+            var urlsArray=["{% url 'BasicBusinessManager:main' %}#home","{% url 'BasicBusinessManager:main' %}#contact","{% url 'order_manager:home' %}","{% url 'react_tutorial:home' %}"];
+            var idsArray=['home-tab','contact-tab','restit-tab','react-tutorial-tab'];
+            for(i = 0;i<urlsArray.length;i++)
+            {
+                if(urlsArray[i].includes(url))
+                {
+                    document.getElementById(idsArray[i]).classList.add('active');
+                    break;
+                }
+            }
+        }
+    </script>
     <title>Seyhak Ly</title>
 </head>
 
@@ -42,13 +69,13 @@
             </button>
             <ul class="nav-tabs nav collapse navbar-collapse" id="navbar">
     
-                <li class="nav-item"><a class="nav-link active" href="{% url 'BasicBusinessManager:main' %}#home">Home</a></li>
+                <li class="nav-item"><a class="nav-link active" id="home-tab" href="{% url 'BasicBusinessManager:main' %}#home">Home</a></li>
                 <!--<li class="nav-item"><a class="nav-link" ></a></li>-->
-                <li class="nav-item"><a class="nav-link" href="{% url 'BasicBusinessManager:main' %}#contact" >Contact</a></li>
+                <li class="nav-item"><a class="nav-link " id="contact-tab" href="{% url 'BasicBusinessManager:main' %}#contact" >Contact</a></li>
                 {% if request.user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'order_manager:home' %}" >RestIT</a></li>
+                <li class="nav-item"><a class="nav-link" id="restit-tab"  href="{% url 'order_manager:home' %}" >RestIT</a></li>
                 {% endif %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'react_tutorial:home' %}" >React</a></li>
+                <li class="nav-item"><a class="nav-link" id="react-tutorial-tab"  href="{% url 'react_tutorial:home' %}" >React</a></li>
 
 
                 <li class="nav-item ml-auto dropdownContainer">
@@ -73,6 +100,7 @@
             </ul>
         </nav>
     </header>
+    <script>window.onload=changeActiveTab();</script>
     {% block content %}
     {% endblock %}
 </body>

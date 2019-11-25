@@ -1,10 +1,29 @@
 {% extends "BasicBusinessManager/WebHtmls/EN/Base.html" %}
 {% load static %}
 {% block content %}
+    <!--React-->
     <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
-    <div id="react_1"></div>
-   <h1 class="display-4 text-center">Hello in RestIT program powered by React</h1>
-   <script src="static/script/home.js"></script>
+    <!--JSX-->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
+    <div id="react_1"></div>
+   <h1 class="h5 text-center">Hello in RestIT program powered by React</h1>
+   <script type="text/babel" src="{% static '/scripts/order_manager_home.js' %}"></script>
+   <section id="react_container">
+    <div id="order_board">
+        {% if first_run is True %}
+        <a onclick="">
+            <div class="card">
+                ////////////zrobić button - card -> reviever sender ->reciever ma wyświetlać dane
+                <img class="card-img-top" src="..." alt="Card image cap">
+                <div class="card-body">
+                  <p class="card-text text-center">Sender</p>
+                </div>
+            </div>
+        </a>
+        <button class="btn btn-outline-secondary">Reciever</button>
+        {% endif %}
+    </div>
+   </section>
 {% endblock %}
