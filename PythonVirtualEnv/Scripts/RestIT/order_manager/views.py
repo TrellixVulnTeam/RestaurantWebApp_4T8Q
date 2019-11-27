@@ -12,10 +12,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 class MainView(TemplateView):
     template_name = 'WebHtmls/EN/Home.html'
     # sends context data to html. It has to be "get_context_data"
-    def get_context_data(self, **kwargs):
+    '''def get_context_data(self, **kwargs):
         context = super(MainView, self).get_context_data(**kwargs)
         context.update({
             'first_run': self.kwargs.get('first_run', True),
             #'var2': self.kwargs.get('var2', None),
         })
-        return context
+        return context'''

@@ -18,14 +18,16 @@ class Employee(models.Model):
         return years_employed   
     
     user = models.OneToOneField(User,on_delete=models.CASCADE)   
-    workplace = models.ManyToManyField("Company",blank=True)
+    workplace = models.ManyToManyField("Company")
     salary_per_month = models.DecimalField(decimal_places =2,max_digits=10,default=0.00)
     birthday = models.DateField(default=timezone.now)
     orders_delivered = models.ManyToManyField("Order",blank=True)
     address = models.CharField(max_length=60,blank=True)
     role = models.ForeignKey("Role",on_delete=models.DO_NOTHING,blank=True, null=True)
     objects = EmployeeManager()
-
+    
+    def get_workplaces(self):
+        return "\n".join([w.name for w in self.workplace.all()])
     def __str__(self):
         try:
             if self.user.first_name != "":

@@ -3,18 +3,25 @@ section
 {
     height: 100vh;
 }
-/*Settings website*/
-
+a
+{
+    text-decoration: none;
+    color:black;
+}
 .settings-view .settings-input
 {
     min-width: 100%;
 }
+.card
+{
+     width:35vw;
+} 
 /*mobile devices first-design for mobiles - desktops are faster so they adapt faster */
 @media only screen and (min-width: 768px) {
     /* For desktop: */
 .card
 {
-     width:40vw;
+     width:35vw;
 } 
 .nav-item
 {

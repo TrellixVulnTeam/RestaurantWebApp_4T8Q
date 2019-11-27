@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'order_manager.apps.OrderPutterConfig',
     'BasicBusinessManager.apps.BasicbusinessmanagerConfig',
     'react_tutorial.apps.ReactTutorialConfig',
+    'django_filters',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -109,7 +110,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'PAGE_SIZE': 10,
 }
 
 # Internationalization

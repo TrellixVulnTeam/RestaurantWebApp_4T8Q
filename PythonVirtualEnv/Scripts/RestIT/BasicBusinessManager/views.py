@@ -22,6 +22,7 @@ from rest_framework import viewsets, serializers, status, response
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import permissions
+from django_filters.rest_framework import DjangoFilterBackend
 from BasicBusinessManager.serializers import *
 from BasicBusinessManager.permissions import *
 # Create your views here.
@@ -205,6 +206,8 @@ class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     permission_classes = [IsOwnerOrReadOnly]
+    filter_backends = [DjangoFilterBackend]#filtering
+    filterset_fields = ['delivered','deliverant']
 
 class CompanyOwnerViewSet(viewsets.ModelViewSet):
     """

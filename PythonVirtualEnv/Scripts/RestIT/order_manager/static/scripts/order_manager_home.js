@@ -30,14 +30,132 @@ $.ajaxSetup({
   }
 });
 //////////////////////////END OF CSRF CODE///////////////////////////////////////////
-
-  //this part will be done with React.js
+function getEmployeeJsonUrl(userId)
+{
+  var url = "http://127.0.0.1:8000/rest/employee/";
+  url+=userId+".json";
+  return url;
+}
+function getCompanyID(userId)
+{
+  var url=getEmployeeJsonUrl(userId);
+  var jsonFile;
+  //get employee json
+  $.getJSON(url,function(data)
+  {
+    jsonFile=JSON.stringify(data);
+    $.ajax({
+      type: "GET",
+      url: url,
+      CSRF: csrftoken,
+      data: jsonFile,
+      contentType: "application/json",
+      success: function(data){
+        jsonFile = JSON.stringify(data);
+      },
+    });
+  });
+  console.log(jsonFile);
+}
+function chooseRestItFunction(fun,userId)
+{
+  if(fun==="sender")
+  {
+    hideMenu();
+    runRecieverUI(getCompanyID(userID));
+  }
+  else
+  {
+    if(fun==="receiver")
+    {
+      hideMenu();
+      getCompanyID(userId);
+      var reciever = new Reciever();
+      reciever.runSenderUI();
+    }
+  }
+}
+function hideMenu(){
+  $(".card").hide();
+}
+/////////////////////this part will be done with React.js///////////////////////////
 function getOrdersFromDatabase()
 {
 
 }
+class Reciever
+{
+  constructor()
+  {
 
-function runRestItUI(typeData="", userID=0,operationType="GET",username="")
+  }
+  runRecieverUI()
+  {
+    //TODO - odebrać jsona i przekształcic w obiekt, spróbować zacząć reacta
+    getUndoneOrders()
+    {
+      var csrftoken = getCookie('csrftoken');
+      var user = new Object; 
+      var jsonFile;
+      $.getJSON(url,function(data)
+      {
+        jsonFile=JSON.stringify(data);
+        jsonFile = getJsonObjectWithDataFromHTML(idVariablesArray,jsonFile);
+        console.log(jsonFile);
+        $.ajax({
+          type: "PUT",
+          url: url,
+          CSRF: csrftoken,
+          data: jsonFile,
+          contentType: "application/json",
+        });
+      });
+    
+
+    }
+    class Box extends React.Component{
+      render()
+      {
+        return
+        (
+          //here box will be rendered
+          <div class="order_box">
+
+          </div>
+        );
+      }
+    }
+    class OrderManager extends React.Component
+    {
+      constructor(props)
+      {
+        super(props);
+        this.state = 
+        {
+          history:[
+            {
+
+            }
+          ],
+          
+        }
+      }
+      render()
+      {
+        
+        return(
+          <div class="order_box_container">
+            
+          </div>
+        );
+      }
+    }
+
+    ReactDOM.render(<Game />, document.getElementById("root"));
+  }
+}
+/////////////////////////////////////SENDER REACT/////////////////////////////////////////////////
+function runSenderUI()
 {
   class Box extends React.Component{
     render()
@@ -79,3 +197,4 @@ function runRestItUI(typeData="", userID=0,operationType="GET",username="")
 
   ReactDOM.render(<Game />, document.getElementById("root"));
 }
+

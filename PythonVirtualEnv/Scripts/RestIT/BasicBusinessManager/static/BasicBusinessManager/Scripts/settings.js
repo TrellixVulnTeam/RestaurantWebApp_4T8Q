@@ -123,9 +123,7 @@ function fillTextboxesWithGetUserObjectFromJSON(fullURLForJSON)
   }
 function loadSettingsFormGettingDataFromObject(userObject)
   {
-    document.getElementById("street").value = userObject.address;
-    //document.getElementById("settings").innerHTML = chuj['username'];
-    
+    document.getElementById("street").value = userObject.address;    
   }
 }
 function getJsonObjectWithDataFromHTML(arrayOfIds=[],jsonFile)
@@ -142,7 +140,6 @@ function getJsonObjectWithDataFromHTML(arrayOfIds=[],jsonFile)
 
 function putObject(url,idVariablesArray=[])
 {
-  //todo <---------ogarnięty backend - przesyłanie funkcji. Zrobić żeby działał PUT dla wszystkich (client chyba działa)
   var csrftoken = getCookie('csrftoken');
   var user = new Object; 
   var jsonFile;

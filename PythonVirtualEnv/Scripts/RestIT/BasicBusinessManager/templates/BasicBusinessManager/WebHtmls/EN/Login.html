@@ -1,5 +1,6 @@
 {% extends "BasicBusinessManager/WebHtmls/EN/Main.html" %}
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'BasicBusinessManager/styles-home.css' %}">
 {% load filters %}
 {% if form.errors %}
 <p>Your username and password didn't match. Please try again.</p>

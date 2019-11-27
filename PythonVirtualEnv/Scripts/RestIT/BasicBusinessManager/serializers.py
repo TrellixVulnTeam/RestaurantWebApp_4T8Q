@@ -16,14 +16,20 @@ class EmployeeSerializer(serializers.ModelSerializer):
        #"what": (BelongingSerializer, {"source": "what"}),
       # "to_who": (FriendSerializer, {"source": "to_who"})
     username = serializers.ReadOnlyField(read_only=True, source="user.username")
-    workplace = serializers.ReadOnlyField(read_only=True, source="company.name")
+    #workplace = serializers.IntegerField(read_only=True, source="workplace.name")
+    workplace = serializers.PrimaryKeyRelatedField(many=True, queryset=Company.objects.all())
     orders_delivered = serializers.PrimaryKeyRelatedField(many=True, queryset=Order.objects.all())
     role = serializers.ReadOnlyField(read_only=True, source="role.name")
     class Meta:
         #user = UserSerializer()
         model = Employee
         #fields = ['username', 'workplace', 'salary_per_month', 'birthday', 'orders_delivered','address', 'role']
-        fields = '__all__'
+        fields = [field.name for field in model._meta.fields]#all
+        fields.extend(['orders_delivered','workplace','username','role'])#add
+        fields.append('orders_delivered')
+        fields.append('workplace')
+        fields.append('username')
+        fields.append('role')
 class UserSerializer(serializers.ModelSerializer):
     #firstname = serializers.CharField(source=User.first_name)
     #id = serializers.IntegerField(source=User.id)

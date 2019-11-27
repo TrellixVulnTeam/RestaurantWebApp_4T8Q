@@ -14,7 +14,7 @@ router = routers.DefaultRouter()
 '''router.register(r'user',views.UserViewSet,base_name='user')
 '''
 urlpatterns = [
-    path('en/home', views.MainView.as_view(), name='home'),
+    path('en/order_manager/', views.MainView.as_view(), name='home'),
     path('rest/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

@@ -1,6 +1,7 @@
 {% extends "BasicBusinessManager/WebHtmls/EN/Base.html" %}
 {% load static %}
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'BasicBusinessManager/styles-home.css' %}">
 <script src="{% static 'BasicBusinessManager/Scripts/settings.js' %}"></script>
 <div id="settings" class="m-5 settings-view">
     <h1 class="h5 text-center m-2">Settings for {{request.user.username}}</h1>

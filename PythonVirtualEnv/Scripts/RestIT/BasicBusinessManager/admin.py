@@ -17,10 +17,11 @@ class EmployeeAdmin(admin.ModelAdmin):
         (None,               {'fields': ['user.name']}),
         ('role', {'fields': ['role.name']}),
     ]'''
-    #inlines = [ChoiceInline]
-    list_display = ('name', 'role', ' years_employed')
-    list_filter = ['role','workplace']
-    search_fields = ['name']
+    #inl'''ines = [ChoiceInline]
+    #list_display = ('name', 'role','workplace')
+    list_display = ('user','get_workplaces')
+    #list_filter = ['role','workplace']
+    #search_fields = ['name']
 
 #registering models to admin site
 admin.site.register(Company)
@@ -29,6 +30,6 @@ admin.site.register(Product)
 admin.site.register(Sale_out)
 admin.site.register(Client)
 admin.site.register(CompanyOwner)
-admin.site.register(Employee)
+admin.site.register(Employee,EmployeeAdmin)
 admin.site.register(Role)
 admin.site.register(Order)
