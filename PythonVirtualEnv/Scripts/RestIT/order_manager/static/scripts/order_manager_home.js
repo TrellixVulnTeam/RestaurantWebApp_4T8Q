@@ -30,138 +30,173 @@ $.ajaxSetup({
   }
 });
 //////////////////////////END OF CSRF CODE///////////////////////////////////////////
-function getEmployeeJsonUrl(userId)
-{
-  var url = "http://127.0.0.1:8000/rest/employee/";
-  url+=userId+".json";
-  return url;
-}
-function getCompanyID(userId)
-{
-  var url=getEmployeeJsonUrl(userId);
-  var jsonFile;
-  //get employee json
-  $.getJSON(url,function(data)
+
+
+class Switcher{
+
+  static hideMenu(){
+    $(".card").hide();
+  }
+
+  static getCompanyID(userId)
   {
-    jsonFile=JSON.stringify(data);
-    $.ajax({
-      type: "GET",
-      url: url,
-      CSRF: csrftoken,
-      data: jsonFile,
-      contentType: "application/json",
-      success: function(data){
-        jsonFile = JSON.stringify(data);
-      },
+    var base = "http://127.0.0.1:8000/";
+    var url = base + "rest/employee/"+userId+".json";
+    var companyID;
+    return $.getJSON(url,function(data){
     });
-  });
-  console.log(jsonFile);
-}
-function chooseRestItFunction(fun,userId)
-{
-  if(fun==="sender")
-  {
-    hideMenu();
-    runRecieverUI(getCompanyID(userID));
   }
-  else
-  {
-    if(fun==="receiver")
-    {
+
+  static chooseRestItFunction(foo,userId){
+    if(foo==="sender"){
       hideMenu();
-      getCompanyID(userId);
-      var reciever = new Reciever();
-      reciever.runSenderUI();
+      runRecieverUI(getCompanyID(userId));
     }
-  }
-}
-function hideMenu(){
-  $(".card").hide();
-}
-/////////////////////this part will be done with React.js///////////////////////////
-function getOrdersFromDatabase()
-{
-
-}
-class Reciever
-{
-  constructor()
-  {
-
-  }
-  runRecieverUI()
-  {
-    //TODO - odebrać jsona i przekształcic w obiekt, spróbować zacząć reacta
-    getUndoneOrders()
-    {
-      var csrftoken = getCookie('csrftoken');
-      var user = new Object; 
-      var jsonFile;
-      $.getJSON(url,function(data)
-      {
-        jsonFile=JSON.stringify(data);
-        jsonFile = getJsonObjectWithDataFromHTML(idVariablesArray,jsonFile);
-        console.log(jsonFile);
-        $.ajax({
-          type: "PUT",
-          url: url,
-          CSRF: csrftoken,
-          data: jsonFile,
-          contentType: "application/json",
+    else{
+      if(foo==="receiver"){
+        this.hideMenu();
+        var companyID;
+        $.when(this.getCompanyID(userId)).done(function(data){
+          var employee = data;
+          companyID = employee.workplace;
+          var receiver = new Receiver(companyID);
         });
-      });
-    
-
-    }
-    class Box extends React.Component{
-      render()
-      {
-        return
-        (
-          //here box will be rendered
-          <div class="order_box">
-
-          </div>
-        );
       }
     }
-    class OrderManager extends React.Component
-    {
-      constructor(props)
-      {
-        super(props);
-        this.state = 
-        {
-          history:[
-            {
-
-            }
-          ],
-          
-        }
-      }
-      render()
-      {
-        
-        return(
-          <div class="order_box_container">
-            
-          </div>
-        );
-      }
-    }
-
-    ReactDOM.render(<Game />, document.getElementById("root"));
   }
 }
+/////////////////////this part will be done with React.js///////////////////////////  //////////////////////////////////REACT part of reciever//////////////////////////////////////////////////////
+
+function OrderFieldTitle(props){
+  return(
+    <h4>{props.id} {props.time.slice(11,19)}</h4>
+  );
+}
+function OrderFieldContent(props){//dokonczyc jutro
+  var content="";
+  for(var i = 0; i<props.products.length; i++){
+    content+=(<p> - {props.products.pop()}</p>);
+  }
+  console.log(content);
+  return(
+    <div className="order_box_content">
+      {content}
+    </div>
+  );
+}
+class OrderBox extends React.Component{
+
+  render()
+  {
+    console.log(this.props);
+    return(
+      <button className="order_box" id = {this.props.order.id} onClick={this.props.onOrderClick}>
+        <OrderFieldTitle id={this.props.order.id} time = {this.props.order.order_date}/>
+        <OrderFieldContent products ={this.props.order.products}/>
+      </button>
+    );
+  }
+}
+class OrdersBoard extends React.Component{//3x3 board for the start
+  renderBox(i){
+    //console.log(this.props.orders.orders[i]);
+    return(
+      <OrderBox
+        key = {i}
+        order = {this.props.orders.orders[i]}
+        onOrderClick = {()=>this.props.onOrderClick(i)}
+      />
+    );
+  }
+  render()
+  {
+    var order_boxes = [];
+    for(var i=0; i<9;i++){
+      if(i<this.props.orders.orders.length){
+        order_boxes.push(this.renderBox(i));
+      }
+      else{
+        break;
+      }
+    }
+    console.log(order_boxes);
+    return(
+      <div className="order_board">
+        {order_boxes}
+      </div>
+    );
+  }
+}
+class OrdersReceiver extends React.Component{//waiting for extensions(? no idea what kind of yet)
+  constructor(props){
+    //console.log("props:");
+    //console.log(props);
+    super(props);
+    const orders = this.props.orders.results;
+    this.state = {
+      currentOrders:{orders},
+    }
+  }
+  render()
+  {
+    return(
+      <div className="order_board_container">
+        <OrdersBoard 
+          orders={this.state.currentOrders}
+          onOrderClick={id=>this.onOrderClick(id)}
+        />
+      </div>
+    );
+  }
+  onOrderClick(id){
+    alert(id);
+
+  }
+
+}
+///////////////////////END OF REACT ORDER RECEIVER///////////////////////////////////////////////////////
+class Receiver{
+
+  constructor(companyID){
+    this.companyID = companyID;
+    this.companyID = this.companyID[0];///decision for workplace - todo
+    this.orders="";
+    var me = this;
+    $.when(this.getUndoneOrders()).done(function(data){
+      me.orders=data;
+      me.runReceiverUI();
+    });
+  }
+
+  runReceiverUI(){
+    //console.log(this.orders);
+    //var reactReceiver = new OrdersReciever(this.orders);
+    ReactDOM.render(<OrdersReceiver orders = { this.orders }/>, document.getElementById("order_board"));
+  }
+
+   getUndoneOrdersJsonUrl(){
+    var base = "http://127.0.0.1:8000/";
+    var url = base + "rest/order/?delivered=false&deliverant="+ this.companyID;
+    return url;
+  }
+
+  getUndoneOrders(){
+    var url = this.getUndoneOrdersJsonUrl();
+    //console.log(url);
+    return $.getJSON(url,function(data){
+    });
+  }
+}  
+
+
+
 /////////////////////////////////////SENDER REACT/////////////////////////////////////////////////
 function runSenderUI()
 {
   class Box extends React.Component{
     render()
     {
-      return
-      (
+      return(
         //here box will be rendered
         <div class="order_box">
 
