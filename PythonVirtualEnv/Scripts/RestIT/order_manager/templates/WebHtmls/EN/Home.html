@@ -13,25 +13,8 @@
    {% if request.user.is_authenticated %}
     <div id="react_1"></div>
    <h1 class="h5 text-center">Hello in RestIT program powered by React and Django.</h1>
-   <section id="react_container">
-    <div id="order_board" class="d-flex justify-content-around">
-            <div class="card m-4">
-                <button class="btn btn-outline-dark" onclick="chooseRestItFunction('sender','{{request.user.employee.id}}')">
-                <img class="card-img-top" src="..." alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text text-center">Sender</p>
-                </div>
-                </button>
-            </div>
-            <div class="card m-4">
-                <button class="btn btn-outline-dark" onclick="Switcher.chooseRestItFunction('receiver','{{request.user.employee.id}}')">
-                <img class="card-img-top" src="..." alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text text-center">Reciever</p>
-                </div>
-                </button>
-            </div>
-    </div>
+   <section id="react_container"> 
+      {% include "WebHtmls\EN\Cards.html" %}
    </section>
    {%else%}
    {%endif%}
