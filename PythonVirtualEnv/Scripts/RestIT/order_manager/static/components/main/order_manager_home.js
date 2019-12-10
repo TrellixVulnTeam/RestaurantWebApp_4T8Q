@@ -1,5 +1,6 @@
-import {} from './csrf';
-
+'use strict';
+import {} from 'order_manager/static/scripts/csrf.js';
+import {Receiver} from '../receiver/receiver';
 class Switcher{
 
   static hideMenu(){
@@ -21,7 +22,7 @@ class Switcher{
       runRecieverUI(getCompanyID(userId));
     }
     else{
-      if(foo==="receiver"){
+      if(foo==="receiver"){//ogarnąć to require
         this.hideMenu();
         var companyID;
         $.when(this.getCompanyID(userId)).done(function(data){
