@@ -1,8 +1,9 @@
+console.log("123123");
 'use strict';
-import {} from 'order_manager/static/scripts/csrf.js';
+import {} from '../../scripts/csrf.js';
 import {Receiver} from '../receiver/receiver';
+console.log(2);
 class Switcher{
-
   static hideMenu(){
     $(".card").hide();
   }
@@ -22,7 +23,7 @@ class Switcher{
       runRecieverUI(getCompanyID(userId));
     }
     else{
-      if(foo==="receiver"){//ogarnąć to require
+      if(foo==="receiver"){
         this.hideMenu();
         var companyID;
         $.when(this.getCompanyID(userId)).done(function(data){
