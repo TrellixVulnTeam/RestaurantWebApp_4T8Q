@@ -1,5 +1,23 @@
+require.config({
+  config: {
+    es6: {
+      resolveModuleSource: function(source) {
+        return 'es6!'+source;
+      }
+    }
+  },
+  paths: {
+    es6: "../../static/node_modules/requirejs-babel/es6",
+    babel: "../../static/node_modules/requirejs-babel/babel-5.8.34.min"
+  },
+});
+require(['../../static/scripts/csrf.js']);
+require(['es6!../../static/components/receiver/receiver.js']);
+
 //import {} from '../../scripts/csrf.js';
 //import {Receiver} from '../receiver/receiver.js';
+
+
 // Importing combination 
 //import React, {Component} from 'react'; 
 // Importing Module 
@@ -7,9 +25,7 @@
 //import ChangeColor from './change-color.js'; 
 // Importing CSS 
 //import './index.css'; 
-define([
-  'dad'
-], function() {
+define(function() {
   console.log("123123");
 });
 /*

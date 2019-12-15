@@ -30,4 +30,3 @@ function getCookie(name) {
     }
   });
   //////////////////////////END OF CSRF CODE///////////////////////////////////////////
-  export {csrfSafeMethod,getCookie};
