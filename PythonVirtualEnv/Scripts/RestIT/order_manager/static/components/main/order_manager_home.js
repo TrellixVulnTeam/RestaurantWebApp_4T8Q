@@ -7,8 +7,8 @@ require.config({
     }
   },
   paths: {
-    es6: "../../static/node_modules/requirejs-babel/es6",
-    babel: "../../static/node_modules/requirejs-babel/babel-5.8.34.min"
+    es6: "node_modules/requirejs-babel/es6",
+    babel: "node_modules/requirejs-babel/babel-4.6.6.min"
   },
 });
 require(['../../static/scripts/csrf.js']);
