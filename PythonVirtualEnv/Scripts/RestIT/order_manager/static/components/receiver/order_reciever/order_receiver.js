@@ -1,8 +1,6 @@
 import OrdersBoard from './order_board/order_board';
 class OrdersReceiver extends React.Component{//waiting for extensions(? no idea what kind of yet)
     constructor(props){
-      //console.log("props:");
-      //console.log(props);
       super(props);
       const orders = this.props.orders.results;
       this.state = {

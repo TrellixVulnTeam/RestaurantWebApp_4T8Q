@@ -1,19 +1,20 @@
 {% extends "BasicBusinessManager/WebHtmls/EN/Base.html" %}
 {% block content %}
 {% load static %}
-   <!--Require
-   <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>-->
-   <!--React-->
-   <script>console.log("readed2");</script>
+   <!--Webpack-->
+   <script src="https://unpkg.com/lodash@4.16.6"></script>
+   <!--Require  data-main="{% static 'scripts/main.js' %}"-->
+   <script data-main="{% static 'scripts/main.js' %}" src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script> 
+   <!--React
    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
-   <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+   <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>-->
    <!--JSX-->
    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
    <!--CSS-->
-   <link rel="stylesheet" type="text/css" href="{% static 'components/main/styles-order_manager.css' %}">
-   <!--JS-->
-   <script type="text/babel" src="{% static '/components/main/order_manager_home.js' %}">console.log("readed");</script>
-   {% if request.user.is_authenticated %}
+   <link rel="stylesheet" type="text/css" href="{% static '/components/main/styles-order_manager.css' %}">
+   <!--JS  type="module"
+   <script type="text/babel" src="{% static '/components/main/order_manager_home.js' %}"></script>-->
+   <script>console.log("readed2");</script>{% if request.user.is_authenticated %}
     <div id="react_1"></div>
    <h1 class="h5 text-center">Hello in RestIT program powered by React and Django.</h1>
    <section id="react_container"> 
