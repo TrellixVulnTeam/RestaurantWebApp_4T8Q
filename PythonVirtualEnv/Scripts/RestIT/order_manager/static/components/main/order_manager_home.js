@@ -1,13 +1,17 @@
 //import {} from '../../scripts/csrf.js';
 //import {Receiver} from '../receiver/receiver.js';
 // Importing combination 
-import React, {Component} from 'react'; 
+//import React, {Component} from 'react'; 
 // Importing Module 
-import ReactDOM from 'react-dom'; 
+//import ReactDOM from 'react-dom'; 
 //import ChangeColor from './change-color.js'; 
 // Importing CSS 
 //import './index.css'; 
-console.log("123123");
+define([
+  'dad'
+], function() {
+  console.log("123123");
+});
 /*
 class Switcher{
   static hideMenu(){
