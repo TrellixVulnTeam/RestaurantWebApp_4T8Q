@@ -1,3 +1,4 @@
+console.log("dupa");
 class Receiver{
 
     constructor(companyID){
@@ -29,4 +30,4 @@ class Receiver{
       return $.getJSON(url,function(data){
       });
     }
-  }  
+  };

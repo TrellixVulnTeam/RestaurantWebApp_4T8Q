@@ -1,22 +1,11 @@
-require.config({
-  config: {
-    es6: {
-      resolveModuleSource: function(source) {
-        return 'es6!'+source;
-      }
-    }
-  },
-  paths: {
-    es6: "node_modules/requirejs-babel/es6",
-    babel: "node_modules/requirejs-babel/babel-4.6.6.min"
-  },
-});
-require(['../../static/scripts/csrf.js']);
-require(['es6!../../static/components/receiver/receiver.js']);
+console.log("gsd");
+//require(['../../static/scripts/csrf.js']);
+//require(['es6!../../static/components/receiver/receiver.js']);
 
-//import {} from '../../scripts/csrf.js';
-//import {Receiver} from '../receiver/receiver.js';
+//import {} from '../scripts/csrf.js';
+//import {Receiver} from '../../receiver/receiver';
 
+require(["es6!../components/receiver/receiver"]);
 
 // Importing combination 
 //import React, {Component} from 'react'; 
@@ -25,15 +14,11 @@ require(['es6!../../static/components/receiver/receiver.js']);
 //import ChangeColor from './change-color.js'; 
 // Importing CSS 
 //import './index.css'; 
-define(function() {
-  console.log("123123");
-});
-/*
+
 class Switcher{
   static hideMenu(){
     $(".card").hide();
   }
-
   static getCompanyID(userId)
   {
     var base = "http://127.0.0.1:8000/";
@@ -60,9 +45,9 @@ class Switcher{
       }
     }
   }
-}/*
+}
 /////////////////////////////////////SENDER REACT/////////////////////////////////////////////////
-define(function runSenderUI()
+/*define(function runSenderUI()
 {
   class Box extends React.Component{
     render()

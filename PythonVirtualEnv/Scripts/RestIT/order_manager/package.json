@@ -2,7 +2,7 @@
   "name": "order_manager",
   "version": "1.0.0",
   "description": "react ordering app",
-  "main": "index.js",
+  "main": "./templates/WebHtmls/EN/Home.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,5 +14,10 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/seyhak"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.5",
+    "@babel/preset-env": "^7.7.6",
+    "@babel/preset-react": "^7.7.4"
   }
 }

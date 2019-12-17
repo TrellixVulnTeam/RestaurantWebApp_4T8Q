@@ -6,12 +6,12 @@
    <!--Require  data-main="{% static 'scripts/main.js' %}"-->
    <!--JSX
    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>-->
-   <script data-main="{% static 'scripts/main.js' %}" src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script> 
+   <script data-main="{% static '/order_manager/scripts/main' %}" src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script> 
    <!--React
    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>-->
    <!--CSS-->
-   <link rel="stylesheet" type="text/css" href="{% static '/components/main/styles-order_manager.css' %}">
+   <link rel="stylesheet" type="text/css" href="{% static '/order_manager/components/main/styles-order_manager.css' %}">
    <!--JS  type="module"
    <script type="text/babel" src="{% static '/components/main/order_manager_home.js' %}"></script>-->
    <script>console.log("readed2");</script>{% if request.user.is_authenticated %}
