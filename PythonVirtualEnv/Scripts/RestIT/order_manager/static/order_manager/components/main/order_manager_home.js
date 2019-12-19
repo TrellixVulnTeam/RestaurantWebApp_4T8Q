@@ -5,7 +5,9 @@ console.log("gsd");
 //import {} from '../scripts/csrf.js';
 //import {Receiver} from '../../receiver/receiver';
 
-require(["es6!../components/receiver/receiver"]);
+require(["es6!../components/receiver/receiver"],(x)=>{
+  console.log(x);
+});
 
 // Importing combination 
 //import React, {Component} from 'react'; 
@@ -88,3 +90,4 @@ class Switcher{
 
   ReactDOM.render(<Game />, document.getElementById("root"));
 });*/
+export {Switcher};

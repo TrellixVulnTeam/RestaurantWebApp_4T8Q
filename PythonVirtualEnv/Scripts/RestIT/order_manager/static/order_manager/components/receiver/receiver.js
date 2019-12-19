@@ -1,4 +1,3 @@
-console.log("dupa");
 class Receiver{
 
     constructor(companyID){
@@ -31,3 +30,4 @@ class Receiver{
       });
     }
   };
+  export {Receiver};
